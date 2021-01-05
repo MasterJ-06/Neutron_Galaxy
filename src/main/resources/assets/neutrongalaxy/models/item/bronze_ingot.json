@@ -1,0 +1,6 @@
+{
+	"parent": "item/generated",
+	"textures": {
+		"layer0": "neutrongalaxy:items/bronze_ingot"
+	}
+}

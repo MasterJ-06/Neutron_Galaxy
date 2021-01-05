@@ -1,0 +1,30 @@
+{
+	"item.neutrongalaxy.aluminium_ingot": "Aluminium Ingot",
+	"item.neutrongalaxy.amethyst": "Amethyst",
+	"item.neutrongalaxy.brass_ingot": "Brass Ingot",
+	"item.neutrongalaxy.bronze_ingot": "Bronze Ingot",
+	"item.neutrongalaxy.cobalt_ingot": "Cobalt Ingot",
+	"item.neutrongalaxy.copper_ingot": "Copper Ingot",
+	"item.neutrongalaxy.nickel_ingot": "Nickel Ingot",
+	"item.neutrongalaxy.opal": "Opal",
+	"item.neutrongalaxy.platinum_ingot": "Platinum Ingot",
+	"item.neutrongalaxy.ruby": "Ruby",
+	"item.neutrongalaxy.silver_ingot": "Silver Ingot",
+	"item.neutrongalaxy.steel_ingot": "Steel Ingot",
+	"item.neutrongalaxy.thermal_fabric": "Thermal Fabric",
+	"item.neutrongalaxy.tin_ingot": "Tin Ingot",
+	"item.neutrongalaxy.rocket_window": "Rocket Window",
+	"item.neutrongalaxy.steel_plate": "Steel Plate",
+	"item.neutrongalaxy.aluminium_plate": "Aluminium Plate",
+	"item.neutrongalaxy.iron_plate": "Iron Plate",
+	"item.neutrongalaxy.silicon": "Silicon",
+	"item.neutrongalaxy.sulfur": "Sulfur",
+	
+	"block.neutrongalaxy.moon_dirt": "Moon Dirt",
+	"block.neutrongalaxy.mercury_stone": "Mercury Stone",
+	"block.neutrongalaxy.mercury_gravel": "Mercury Gravel",
+	"block.neutrongalaxy.moon_rock": "Moon Rock",
+	"block.neutrongalaxy.pluto_rock": "Pluto Rock",
+	
+	"itemGroup.neutrongalaxyitems": "Neutron Galaxy"
+}

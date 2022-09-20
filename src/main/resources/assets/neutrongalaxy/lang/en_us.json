@@ -1,6 +1,5 @@
 {
 	"item.neutrongalaxy.aluminium_ingot": "Aluminium Ingot",
-	"item.neutrongalaxy.amethyst": "Amethyst",
 	"item.neutrongalaxy.brass_ingot": "Brass Ingot",
 	"item.neutrongalaxy.bronze_ingot": "Bronze Ingot",
 	"item.neutrongalaxy.cobalt_ingot": "Cobalt Ingot",
@@ -25,6 +24,13 @@
 	"block.neutrongalaxy.mercury_gravel": "Mercury Gravel",
 	"block.neutrongalaxy.moon_rock": "Moon Rock",
 	"block.neutrongalaxy.pluto_rock": "Pluto Rock",
+	"block.neutrongalaxy.jupiter_rock": "Jupiter Rock",
+	"block.neutrongalaxy.jupiter_stone": "Jupiter Stone",
+	"block.neutrongalaxy.launch_pad": "Launch Pad",
+	"block.neutrongalaxy.mars_dust": "Mars Dust",
+	"block.neutrongalaxy.venus_dust": "Venus Dust",
+	"block.neutrongalaxy.venus_rock": "Venus Rock",
+	"block.neutrongalaxy.venus_stone": "Venus Stone",
 	
 	"itemGroup.neutrongalaxyitems": "Neutron Galaxy"
 }

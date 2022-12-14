@@ -19,7 +19,7 @@ public class NeutronGalaxy {
         ItemInit.ITEMS.register(bus);
     }
 
-    public static final CreativeModeTab TAB = new CreativeModeTab(MODID) {
+    public static final CreativeModeTab TAB = new CreativeModeTab(NeutronGalaxy.MODID) {
         @Override
         public @NotNull ItemStack makeIcon() {
             return BlockInit.PLUTO_ROCK.get().asItem().getDefaultInstance();

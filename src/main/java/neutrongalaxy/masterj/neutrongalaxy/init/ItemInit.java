@@ -1,5 +1,8 @@
 package neutrongalaxy.masterj.neutrongalaxy.init;
 
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.food.FoodProperties;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
@@ -47,6 +50,16 @@ public class ItemInit {
             () -> new Item(new Item.Properties().tab(NeutronGalaxy.TAB)));
     public static final RegistryObject<Item> SULFUR_INGOT = ItemInit.ITEMS.register("sulfur",
             () -> new Item(new Item.Properties().tab(NeutronGalaxy.TAB)));
+    public static final RegistryObject<Item> COFFEE = ItemInit.ITEMS.register("coffee",
+            () -> new DRINK(new Item.Properties().tab(NeutronGalaxy.TAB).food(Foods.COFFEE)));
+
+    public static class Foods {
+        public static final FoodProperties COFFEE = new FoodProperties.Builder()
+                .nutrition(6)
+                .saturationMod(0.6f)
+                .effect(() -> new MobEffectInstance(MobEffects.HEALTH_BOOST, 1200, 4), 0.97f)
+                .build();
+    }
 }
 
 //add coffee as food

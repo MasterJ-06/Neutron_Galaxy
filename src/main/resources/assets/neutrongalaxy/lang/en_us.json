@@ -33,6 +33,11 @@
 	"block.neutrongalaxy.venus_dust": "Venus Dust",
 	"block.neutrongalaxy.venus_rock": "Venus Rock",
 	"block.neutrongalaxy.venus_stone": "Venus Stone",
+
+	"entity.neutrongalaxy.rocket": "Rocket",
+
+	"key.neutrongalaxy.launch_rocket": "Launch Rocket",
 	
-	"itemGroup.neutrongalaxy": "Neutron Galaxy"
+	"itemGroup.neutrongalaxy": "Neutron Galaxy",
+	"key.category.masterj.neutrongalaxy": "Neutron Galaxy"
 }

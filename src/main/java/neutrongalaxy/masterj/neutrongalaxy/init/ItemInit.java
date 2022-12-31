@@ -3,6 +3,8 @@ package neutrongalaxy.masterj.neutrongalaxy.init;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.food.FoodProperties;
+import net.minecraft.world.item.BoatItem;
+import net.minecraft.world.item.SpawnEggItem;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
@@ -52,6 +54,8 @@ public class ItemInit {
             () -> new Item(new Item.Properties().tab(NeutronGalaxy.TAB)));
     public static final RegistryObject<Item> COFFEE = ItemInit.ITEMS.register("coffee",
             () -> new DRINK(new Item.Properties().tab(NeutronGalaxy.TAB).food(Foods.COFFEE)));
+    public static final RegistryObject<Item> ROCKET = ItemInit.ITEMS.register("rocket",
+            () -> new RocketItem(new Item.Properties().tab(NeutronGalaxy.TAB)));
 
     public static class Foods {
         public static final FoodProperties COFFEE = new FoodProperties.Builder()

@@ -9,6 +9,7 @@ import net.minecraftforge.network.NetworkEvent;
 import neutrongalaxy.masterj.neutrongalaxy.entities.RocketEntity;
 import neutrongalaxy.masterj.neutrongalaxy.entities.TP;
 import neutrongalaxy.masterj.neutrongalaxy.events.ClientEvents;
+import neutrongalaxy.masterj.neutrongalaxy.networking.ModPackets;
 
 import java.util.Objects;
 import java.util.function.Supplier;
@@ -34,12 +35,11 @@ public class MoveRocketC2SPacket {
             ServerLevel level = player.getLevel();
 
             if (player.getRootVehicle() instanceof RocketEntity) {
-                if (player.getRootVehicle().getY() <= 151) {// this condition is true, just takes forever to get the entity moving
+                if (player.getRootVehicle().getY() <= 151) {
                     Objects.requireNonNull(player.getVehicle()).setDeltaMovement(player.getVehicle().getDeltaMovement().add(0.0D, 0.01D, 0.0D));
                 } else if (player.getRootVehicle().getY() >= 151) {
-                    player.getRootVehicle().changeDimension(Objects.requireNonNull(Objects.requireNonNull(player.getServer()).getLevel(Level.NETHER)), new TP());
-                    player.changeDimension(Objects.requireNonNull(player.getServer().getLevel(Level.NETHER)), new TP());
-                    player.getRootVehicle().setOnGround(true);
+                    ClientEvents.launch = false;
+                    ModPackets.sendToPlayer(new RequestDestPlanetS2CPacket(), player);
                 }
             } else {
                 ClientEvents.launch = false;

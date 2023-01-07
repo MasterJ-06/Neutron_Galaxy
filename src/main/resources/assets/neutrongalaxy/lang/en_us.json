@@ -21,6 +21,8 @@
 
 	"item.neutrongalaxy.coffee": "Coffee",
 
+	"item.neutrongalaxy.rocket": "Rocket",
+
 	"block.neutrongalaxy.moon_dirt": "Moon Dirt",
 	"block.neutrongalaxy.mercury_stone": "Mercury Stone",
 	"block.neutrongalaxy.mercury_gravel": "Mercury Gravel",
@@ -37,6 +39,17 @@
 	"entity.neutrongalaxy.rocket": "Rocket",
 
 	"key.neutrongalaxy.launch_rocket": "Launch Rocket",
+
+	"neutrongalaxy.space.button.sun": "Sun",
+	"neutrongalaxy.space.button.moon": "Moon",
+	"neutrongalaxy.space.button.mercury": "Mercury",
+	"neutrongalaxy.space.button.venus": "Venus",
+	"neutrongalaxy.space.button.earth": "Earth",
+	"neutrongalaxy.space.button.mars": "Mars",
+	"neutrongalaxy.space.button.jupiter": "Jupiter",
+	"neutrongalaxy.space.button.saturn": "Saturn",
+	"neutrongalaxy.space.button.neptune": "Neptune",
+	"neutrongalaxy.space.button.uranus": "Uranus",
 	
 	"itemGroup.neutrongalaxy": "Neutron Galaxy",
 	"key.category.masterj.neutrongalaxy": "Neutron Galaxy"

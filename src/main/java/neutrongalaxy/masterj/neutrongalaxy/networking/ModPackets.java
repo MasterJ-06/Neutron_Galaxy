@@ -8,6 +8,8 @@ import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.network.simple.SimpleChannel;
 import neutrongalaxy.masterj.neutrongalaxy.NeutronGalaxy;
 import neutrongalaxy.masterj.neutrongalaxy.networking.packet.MoveRocketC2SPacket;
+import neutrongalaxy.masterj.neutrongalaxy.networking.packet.RequestDestPlanetS2CPacket;
+import neutrongalaxy.masterj.neutrongalaxy.networking.packet.SendDestPlanetC2SPacket;
 
 public class ModPackets {
     private static SimpleChannel INSTANCE;
@@ -28,6 +30,10 @@ public class ModPackets {
         INSTANCE = net;
         net.messageBuilder(MoveRocketC2SPacket.class, id(), NetworkDirection.PLAY_TO_SERVER).decoder(MoveRocketC2SPacket::new).encoder(MoveRocketC2SPacket::toBytes)
                 .consumerMainThread(MoveRocketC2SPacket::handle).add();
+        net.messageBuilder(RequestDestPlanetS2CPacket.class, id(), NetworkDirection.PLAY_TO_CLIENT).decoder(RequestDestPlanetS2CPacket::new).encoder(RequestDestPlanetS2CPacket::toBytes)
+                .consumerMainThread(RequestDestPlanetS2CPacket::handle).add();
+        net.messageBuilder(SendDestPlanetC2SPacket.class, id(), NetworkDirection.PLAY_TO_SERVER).decoder(SendDestPlanetC2SPacket::new).encoder(SendDestPlanetC2SPacket::toBytes)
+                .consumerMainThread(SendDestPlanetC2SPacket::handle).add();
     }
 
     public static <MSG> void sendToServer(MSG message) {

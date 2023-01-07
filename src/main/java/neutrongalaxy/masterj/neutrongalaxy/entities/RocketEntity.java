@@ -10,7 +10,7 @@ import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -22,13 +22,17 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.vehicle.DismountHelper;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.client.event.RegisterGuiOverlaysEvent;
+import net.minecraftforge.client.gui.overlay.IGuiOverlay;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.ITeleporter;
+import net.minecraftforge.fml.ModLoader;
+import net.minecraftforge.fml.ModLoadingContext;
 import neutrongalaxy.masterj.neutrongalaxy.events.ClientEvents;
 import neutrongalaxy.masterj.neutrongalaxy.init.BlockInit;
 import neutrongalaxy.masterj.neutrongalaxy.init.EntityInit;
@@ -37,8 +41,9 @@ import neutrongalaxy.masterj.neutrongalaxy.networking.ModPackets;
 import neutrongalaxy.masterj.neutrongalaxy.networking.packet.MoveRocketC2SPacket;
 
 import javax.annotation.Nullable;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Objects;
 
 public class RocketEntity extends Entity implements ITeleporter {
 

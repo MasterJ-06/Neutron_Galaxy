@@ -10,8 +10,11 @@ displayName="§1 Neutron Galaxy" #mandatory
 #updateJSONURL="https://change.me.example.invalid/updates.json" #optional
 displayURL="https://neutrongalaxy.epizy.com/" #optional
 logoFile="logo.png" #optional
-credits='''§e 3d modeling creator: Leviston §r§5 2d graphics designer: Miller_Craft §r§a Programing: MasterJ_Craft
-Some of the planet textures are from https://www.solarsystemscope.com/textures/ under the CC BY 4.0 lisence.''' #optional
+credits='''§e 3d modeling creator: Leviston and MasterJ_Craft §r§5 2d graphics designer: Miller_Craft §r§a Programing: MasterJ_Craft
+
+Some of the planet textures are from https://www.solarsystemscope.com/textures/ under the CC BY 4.0 lisence.
+
+The planet selection screen's music was created with the groovepad app https://play.google.com/store/apps/details?id=com.easybrain.make.music''' #optional
 authors="§2 MasterJ_Craft" #optional
 description='''
 §b This mods alows you to travel around the universe

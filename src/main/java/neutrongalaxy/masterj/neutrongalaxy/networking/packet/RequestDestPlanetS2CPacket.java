@@ -1,17 +1,15 @@
 package neutrongalaxy.masterj.neutrongalaxy.networking.packet;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.resources.sounds.AbstractTickableSoundInstance;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.level.Level;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.RandomSource;
 import net.minecraftforge.network.NetworkEvent;
 import neutrongalaxy.masterj.neutrongalaxy.client.gui.screens.SpaceScreen;
-import neutrongalaxy.masterj.neutrongalaxy.entities.RocketEntity;
-import neutrongalaxy.masterj.neutrongalaxy.entities.TP;
 import neutrongalaxy.masterj.neutrongalaxy.events.ClientEvents;
+import neutrongalaxy.masterj.neutrongalaxy.sounds.ModSounds;
 
-import java.util.Objects;
 import java.util.function.Supplier;
 
 public class RequestDestPlanetS2CPacket {
@@ -31,6 +29,8 @@ public class RequestDestPlanetS2CPacket {
         NetworkEvent.Context ctx = supplier.get();
         ctx.enqueueWork(() -> {
             // Here we are on the client
+
+            Minecraft.getInstance().player.playSound(ModSounds.SPACE_MUSIC.get(), 0.5f, 1f);
             Minecraft.getInstance().setScreen(new SpaceScreen());
         });
         return true;

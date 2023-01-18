@@ -16,6 +16,7 @@ import neutrongalaxy.masterj.neutrongalaxy.init.BlockInit;
 import neutrongalaxy.masterj.neutrongalaxy.init.EntityInit;
 import neutrongalaxy.masterj.neutrongalaxy.init.ItemInit;
 import neutrongalaxy.masterj.neutrongalaxy.networking.ModPackets;
+import neutrongalaxy.masterj.neutrongalaxy.sounds.ModSounds;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import com.mojang.logging.LogUtils;
@@ -32,6 +33,7 @@ public class NeutronGalaxy {
         BlockInit.BLOCKS.register(bus);
         ItemInit.ITEMS.register(bus);
         EntityInit.ENTITIES.register(bus);
+        ModSounds.register(bus);
         bus.addListener(this::commonSetup);
         MinecraftForge.EVENT_BUS.register(this);
     }

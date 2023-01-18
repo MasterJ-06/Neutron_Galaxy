@@ -42,60 +42,70 @@ public class SpaceScreen extends Screen {
             this.minecraft.setScreen(null);
             Minecraft.getInstance().player.sendSystemMessage(Component.literal("Sun"));
             this.destPlanet = "sun";
+            Minecraft.getInstance().getSoundManager().stop();
             ModPackets.sendToServer(new SendDestPlanetC2SPacket());
         }, Component.translatable("neutrongalaxy.space.button.sun"))));
         this.exitButtons.add(this.addRenderableWidget(new ImageButton(40, 90, 20, 20, 0, 0, 0, new ResourceLocation(NeutronGalaxy.MODID, "textures/gui/mercury.png"), 20, 20, (p_95930_) -> {
             this.minecraft.setScreen(null);
             Minecraft.getInstance().player.sendSystemMessage(Component.literal("Mercury"));
             this.destPlanet = "mercury";
+            Minecraft.getInstance().getSoundManager().stop();
             ModPackets.sendToServer(new SendDestPlanetC2SPacket());
         }, Component.translatable("neutrongalaxy.space.button.mercury"))));
         this.exitButtons.add(this.addRenderableWidget(new ImageButton(60, 110, 30, 30, 0, 0, 0, new ResourceLocation(NeutronGalaxy.MODID, "textures/gui/venus.png"), 30, 30, (p_95930_) -> {
             this.minecraft.setScreen(null);
             Minecraft.getInstance().player.sendSystemMessage(Component.literal("Venus"));
             this.destPlanet = "venus";
+            Minecraft.getInstance().getSoundManager().stop();
             ModPackets.sendToServer(new SendDestPlanetC2SPacket());
         }, Component.translatable("neutrongalaxy.space.button.venus"))));
         this.exitButtons.add(this.addRenderableWidget(new ImageButton(100, 90, 30, 30, 0, 0, 0, new ResourceLocation(NeutronGalaxy.MODID, "textures/gui/earth.png"), 30, 30, (p_95930_) -> {
             this.minecraft.setScreen(null);
             Minecraft.getInstance().player.sendSystemMessage(Component.literal("Earth"));
             this.destPlanet = "earth";
+            Minecraft.getInstance().getSoundManager().stop();
             ModPackets.sendToServer(new SendDestPlanetC2SPacket());
         }, Component.translatable("neutrongalaxy.space.button.earth"))));
         this.exitButtons.add(this.addRenderableWidget(new ImageButton(140, 110, 25, 25, 0, 0, 0, new ResourceLocation(NeutronGalaxy.MODID, "textures/gui/mars.png"), 25, 25, (p_95930_) -> {
             this.minecraft.setScreen(null);
             Minecraft.getInstance().player.sendSystemMessage(Component.literal("Mars"));
             this.destPlanet = "mars";
+            Minecraft.getInstance().getSoundManager().stop();
             ModPackets.sendToServer(new SendDestPlanetC2SPacket());
         }, Component.translatable("neutrongalaxy.space.button.mars"))));
         this.exitButtons.add(this.addRenderableWidget(new ImageButton(190, 80, 60, 60, 0, 0, 0, new ResourceLocation(NeutronGalaxy.MODID, "textures/gui/jupiter.png"), 60, 60, (p_95930_) -> {
             this.minecraft.setScreen(null);
             Minecraft.getInstance().player.sendSystemMessage(Component.literal("Jupiter"));
             this.destPlanet = "jupiter";
+            Minecraft.getInstance().getSoundManager().stop();
             ModPackets.sendToServer(new SendDestPlanetC2SPacket());
         }, Component.translatable("neutrongalaxy.space.button.jupiter"))));
         this.exitButtons.add(this.addRenderableWidget(new ImageButton(245, 110, 95, 49, 0, 0, 0, new ResourceLocation(NeutronGalaxy.MODID, "textures/gui/saturn.png"), 95, 49, (p_95930_) -> {
             this.minecraft.setScreen(null);
             Minecraft.getInstance().player.sendSystemMessage(Component.literal("Saturn"));
             this.destPlanet = "saturn";
+            Minecraft.getInstance().getSoundManager().stop();
             ModPackets.sendToServer(new SendDestPlanetC2SPacket());
         }, Component.translatable("neutrongalaxy.space.button.saturn"))));
         this.exitButtons.add(this.addRenderableWidget(new ImageButton(320, 80, 40, 40, 0, 0, 0, new ResourceLocation(NeutronGalaxy.MODID, "textures/gui/neptune.png"), 40, 40, (p_95930_) -> {
             this.minecraft.setScreen(null);
             Minecraft.getInstance().player.sendSystemMessage(Component.literal("Neptune"));
             this.destPlanet = "neptune";
+            Minecraft.getInstance().getSoundManager().stop();
             ModPackets.sendToServer(new SendDestPlanetC2SPacket());
         }, Component.translatable("neutrongalaxy.space.button.neptune"))));
         this.exitButtons.add(this.addRenderableWidget(new ImageButton(370, 110, 40, 40, 0, 0, 0, new ResourceLocation(NeutronGalaxy.MODID, "textures/gui/uranus.png"), 40, 40, (p_95930_) -> {
             this.minecraft.setScreen(null);
             Minecraft.getInstance().player.sendSystemMessage(Component.literal("Uranus"));
             this.destPlanet = "uranus";
+            Minecraft.getInstance().getSoundManager().stop();
             ModPackets.sendToServer(new SendDestPlanetC2SPacket());
         }, Component.translatable("neutrongalaxy.space.button.uranus"))));
         this.exitButtons.add(this.addRenderableWidget(new ImageButton(125, 75, 15, 15, 0, 0, 0, new ResourceLocation(NeutronGalaxy.MODID, "textures/gui/moon.png"), 15, 15, (p_95930_) -> {
             this.minecraft.setScreen(null);
             Minecraft.getInstance().player.sendSystemMessage(Component.literal("Moon"));
             this.destPlanet = "moon";
+            Minecraft.getInstance().getSoundManager().stop();
             ModPackets.sendToServer(new SendDestPlanetC2SPacket());
         }, Component.translatable("neutrongalaxy.space.button.moon"))));
         for(Button button : this.exitButtons) {
@@ -104,7 +114,7 @@ public class SpaceScreen extends Screen {
     }
 
     public boolean shouldCloseOnEsc() {
-        return true;
+        return false;
     }
     public boolean isPauseScreen() {
         return false;

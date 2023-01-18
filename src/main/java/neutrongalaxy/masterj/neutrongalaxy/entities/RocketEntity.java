@@ -2,6 +2,8 @@ package neutrongalaxy.masterj.neutrongalaxy.entities;
 
 import com.google.common.collect.Lists;
 import net.minecraft.BlockUtil;
+import net.minecraft.client.CameraType;
+import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -10,13 +12,11 @@ import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
-import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.animal.WaterAnimal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.vehicle.DismountHelper;
@@ -27,12 +27,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.client.event.RegisterGuiOverlaysEvent;
-import net.minecraftforge.client.gui.overlay.IGuiOverlay;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.ITeleporter;
-import net.minecraftforge.fml.ModLoader;
-import net.minecraftforge.fml.ModLoadingContext;
 import neutrongalaxy.masterj.neutrongalaxy.events.ClientEvents;
 import neutrongalaxy.masterj.neutrongalaxy.init.BlockInit;
 import neutrongalaxy.masterj.neutrongalaxy.init.EntityInit;
@@ -41,8 +36,6 @@ import neutrongalaxy.masterj.neutrongalaxy.networking.ModPackets;
 import neutrongalaxy.masterj.neutrongalaxy.networking.packet.MoveRocketC2SPacket;
 
 import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 public class RocketEntity extends Entity implements ITeleporter {
@@ -194,7 +187,8 @@ public class RocketEntity extends Entity implements ITeleporter {
     }
 
     public double getPassengersRidingOffset() {
-        return -0.1D;
+//        return -0.1D;
+        return 1.4D;
     }
 
     public boolean hurt(DamageSource p_38319_, float p_38320_) {
@@ -237,7 +231,7 @@ public class RocketEntity extends Entity implements ITeleporter {
     }
 
     public Item getDropItem() {
-        return ItemInit.BRASS_INGOT.get();
+        return ItemInit.ROCKET.get();
     }
 
     public void animateHurt() {
@@ -295,33 +289,15 @@ public class RocketEntity extends Entity implements ITeleporter {
         if (this.hasPassenger(p_38379_)) {
             float f = this.getSinglePassengerXOffset();
             float f1 = (float)((this.isRemoved() ? (double)0.01F : this.getPassengersRidingOffset()) + p_38379_.getMyRidingOffset());
-            if (this.getPassengers().size() > 1) {
-                int i = this.getPassengers().indexOf(p_38379_);
-                if (i == 0) {
-                    f = 0.2F;
-                } else {
-                    f = -0.6F;
-                }
 
-                if (p_38379_ instanceof Animal) {
-                    f += 0.2F;
-                }
-            }
-
-            Vec3 vec3 = (new Vec3(f, 0.0D, 0.0D)).yRot(-this.getYRot() * ((float)Math.PI / 180F) - ((float)Math.PI / 2F));
-            p_38379_.setPos(this.getX() + vec3.x, this.getY() + (double)f1, this.getZ() + vec3.z);
+            p_38379_.setPos(this.getX(), this.getY() + (double)f1, this.getZ());
             p_38379_.setYRot(p_38379_.getYRot() + this.deltaRotation);
             p_38379_.setYHeadRot(p_38379_.getYHeadRot() + this.deltaRotation);
-            if (p_38379_ instanceof Animal && this.getPassengers().size() == this.getMaxPassengers()) {
-                int j = p_38379_.getId() % 2 == 0 ? 90 : 270;
-                p_38379_.setYBodyRot(((Animal)p_38379_).yBodyRot + (float)j);
-                p_38379_.setYHeadRot(p_38379_.getYHeadRot() + (float)j);
-            }
-
         }
     }
 
     public Vec3 getDismountLocationForPassenger(LivingEntity p_38357_) {
+        Minecraft.getInstance().options.setCameraType(CameraType.FIRST_PERSON);
         Vec3 vec3 = getCollisionHorizontalEscapeVector(this.getBbWidth() * Mth.SQRT_OF_TWO, p_38357_.getBbWidth(), p_38357_.getYRot());
         double d0 = this.getX() + vec3.x;
         double d1 = this.getZ() + vec3.z;
@@ -419,6 +395,7 @@ public class RocketEntity extends Entity implements ITeleporter {
     // Forge: Fix MC-119811 by instantly completing lerp on board
     @Override
     protected void addPassenger(Entity passenger) {
+        Minecraft.getInstance().options.setCameraType(CameraType.THIRD_PERSON_FRONT);
         super.addPassenger(passenger);
         if (this.isControlledByLocalInstance() && this.lerpSteps > 0) {
             this.lerpSteps = 0;

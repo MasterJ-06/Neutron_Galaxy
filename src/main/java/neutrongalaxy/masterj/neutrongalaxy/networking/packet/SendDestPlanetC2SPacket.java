@@ -40,9 +40,9 @@ public class SendDestPlanetC2SPacket {
             if (player.getRootVehicle() instanceof RocketEntity) {
                 if (player.getRootVehicle().getY() >= 151) {
                     player.sendSystemMessage(Component.literal(SpaceScreen.destPlanet));
-                    player.getRootVehicle().changeDimension(Objects.requireNonNull(Objects.requireNonNull(player.getServer()).getLevel(Level.NETHER)), new TP());
-                    player.changeDimension(Objects.requireNonNull(player.getServer().getLevel(Level.NETHER)), new TP());
-
+                    player.getRootVehicle().changeDimension(Objects.requireNonNull(Objects.requireNonNull(player.getServer()).getLevel(ServerLevel.NETHER)), new TP());
+                    player.changeDimension(Objects.requireNonNull(player.getServer().getLevel(ServerLevel.NETHER)), new TP());
+                    // check what dimension the player is already in, don't let it move to the dimension it is already in.
                     // This is to stop the player from falling to their death when changing dimensions. Possibly going to be replaced by a parachute armour piece.
                     // May need to increase or decrease 2nd int for MobEffectInstance depending on the height above the planet the rocket is so slow falling stops them from dying.
                     if (!player.isOnGround()) {

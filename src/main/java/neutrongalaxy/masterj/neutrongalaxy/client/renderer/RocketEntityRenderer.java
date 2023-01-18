@@ -40,7 +40,8 @@ private final Map<RocketEntity.Type, Pair<ResourceLocation, rocket_model>> rocke
 
     public void render(RocketEntity p_113929_, float p_113930_, float p_113931_, PoseStack p_113932_, MultiBufferSource p_113933_, int p_113934_) {
         p_113932_.pushPose();
-        p_113932_.translate(0.0D, 0.375D, 0.0D);
+//        p_113932_.translate(0.0D, 0.375D, 0.0D);
+        p_113932_.translate(0.0D, 4.5D, 0.0D);
         p_113932_.mulPose(Vector3f.YP.rotationDegrees(180.0F - p_113930_));
         float f = (float)p_113929_.getHurtTime() - p_113931_;
         float f1 = p_113929_.getDamage() - p_113931_;
@@ -55,7 +56,7 @@ private final Map<RocketEntity.Type, Pair<ResourceLocation, rocket_model>> rocke
         Pair<ResourceLocation, rocket_model> pair = getModelWithLocation(p_113929_);
         ResourceLocation resourcelocation = pair.getFirst();
         rocket_model rocketModel = pair.getSecond();
-        p_113932_.scale(-1.0F, -1.0F, 1.0F);
+        p_113932_.scale(-3F, -3F, 3F);
         p_113932_.mulPose(Vector3f.YP.rotationDegrees(90.0F));
         rocketModel.setupAnim(p_113929_, p_113931_, 0.0F, -0.1F, 0.0F, 0.0F);
         VertexConsumer vertexconsumer = p_113933_.getBuffer(rocketModel.renderType(resourcelocation));

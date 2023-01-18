@@ -13,5 +13,5 @@ public class EntityInit {
     public static final DeferredRegister<EntityType<?>> ENTITIES  = DeferredRegister.create(ForgeRegistries.ENTITY_TYPES, NeutronGalaxy.MODID);
 
     public static final RegistryObject<EntityType<RocketEntity>> ROCKET = ENTITIES.register("rocket",
-            () -> EntityType.Builder.<RocketEntity>of(RocketEntity::new, MobCategory.MISC).sized(0.5f, 0.7f).build(new ResourceLocation(NeutronGalaxy.MODID, "rocket").toString()));
+            () -> EntityType.Builder.<RocketEntity>of(RocketEntity::new, MobCategory.MISC).sized(3f, 6f).build(new ResourceLocation(NeutronGalaxy.MODID, "rocket").toString()));
 }

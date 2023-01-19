@@ -22,8 +22,6 @@ public class ItemInit {
             () -> new Item(new Item.Properties().tab(NeutronGalaxy.TAB)));
     public static final RegistryObject<Item> COBALT_INGOT = ItemInit.ITEMS.register("cobalt_ingot",
             () -> new Item(new Item.Properties().tab(NeutronGalaxy.TAB)));
-    public static final RegistryObject<Item> COPPER_INGOT = ItemInit.ITEMS.register("copper_ingot",
-            () -> new Item(new Item.Properties().tab(NeutronGalaxy.TAB)));
     public static final RegistryObject<Item> NICKEL_INGOT = ItemInit.ITEMS.register("nickel_ingot",
             () -> new Item(new Item.Properties().tab(NeutronGalaxy.TAB)));
     public static final RegistryObject<Item> OPAL = ItemInit.ITEMS.register("opal",

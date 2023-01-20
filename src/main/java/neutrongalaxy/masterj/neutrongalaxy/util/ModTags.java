@@ -8,6 +8,7 @@ import neutrongalaxy.masterj.neutrongalaxy.NeutronGalaxy;
 
 public class ModTags {
     public static class Blocks {
+        // make sure to use .requiresCorrectToolForDrops() on the block in block init for the tags to work.
         public static final TagKey<Block> NEEDS_ALUMINIUM_TOOL = tag("needs_aluminium_tool");
         public static final TagKey<Block> NEEDS_BRASS_TOOL = tag("needs_brass_tool");
         public static final TagKey<Block> NEEDS_BRONZE_TOOL = tag("needs_bronze_tool");

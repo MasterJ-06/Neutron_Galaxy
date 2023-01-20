@@ -1,12 +1,6 @@
 {
   "replace": false,
   "values": [
-    "neutrongalaxy:jupiter_stone",
-    "neutrongalaxy:jupiter_rock",
-    "neutrongalaxy:mercury_stone",
-    "neutrongalaxy:moon_rock",
-    "neutrongalaxy:pluto_rock",
-    "neutrongalaxy:venus_rock",
-    "neutrongalaxy:venus_stone"
+
   ]
 }

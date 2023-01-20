@@ -1,4 +1,4 @@
-package neutrongalaxy.masterj.neutrongalaxy.init;
+package neutrongalaxy.masterj.neutrongalaxy.base;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.stats.Stats;
@@ -23,6 +23,7 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import neutrongalaxy.masterj.neutrongalaxy.entities.RocketEntity;
+import neutrongalaxy.masterj.neutrongalaxy.init.BlockInit;
 
 import java.util.List;
 import java.util.function.Predicate;

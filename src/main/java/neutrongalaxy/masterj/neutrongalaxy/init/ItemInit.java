@@ -8,6 +8,8 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import neutrongalaxy.masterj.neutrongalaxy.NeutronGalaxy;
+import neutrongalaxy.masterj.neutrongalaxy.base.DRINK;
+import neutrongalaxy.masterj.neutrongalaxy.base.RocketItem;
 import neutrongalaxy.masterj.neutrongalaxy.util.ModToolTiers;
 
 public class ItemInit {

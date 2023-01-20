@@ -1,4 +1,4 @@
-package neutrongalaxy.masterj.neutrongalaxy.init;
+package neutrongalaxy.masterj.neutrongalaxy.base;
 
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;

@@ -11,6 +11,7 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import neutrongalaxy.masterj.neutrongalaxy.NeutronGalaxy;
+import neutrongalaxy.masterj.neutrongalaxy.base.LAUNCH_PAD;
 
 import java.util.function.Supplier;
 

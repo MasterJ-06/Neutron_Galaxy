@@ -1,4 +1,4 @@
-package neutrongalaxy.masterj.neutrongalaxy.init;
+package neutrongalaxy.masterj.neutrongalaxy.base;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.BlockGetter;

@@ -2,6 +2,7 @@ package neutrongalaxy.masterj.neutrongalaxy.init;
 
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.*;
 import net.minecraftforge.registries.DeferredRegister;
@@ -10,6 +11,7 @@ import net.minecraftforge.registries.RegistryObject;
 import neutrongalaxy.masterj.neutrongalaxy.NeutronGalaxy;
 import neutrongalaxy.masterj.neutrongalaxy.base.DRINK;
 import neutrongalaxy.masterj.neutrongalaxy.base.RocketItem;
+import neutrongalaxy.masterj.neutrongalaxy.util.ModArmorTiers;
 import neutrongalaxy.masterj.neutrongalaxy.util.ModToolTiers;
 
 public class ItemInit {
@@ -165,6 +167,94 @@ public class ItemInit {
             () -> new AxeItem(ModToolTiers.TIN, 6, -3.1f, new Item.Properties().tab(NeutronGalaxy.TAB)));
     public static final RegistryObject<HoeItem> TIN_HOE = ItemInit.ITEMS.register("tin_hoe",
             () -> new HoeItem(ModToolTiers.TIN, -2, -1.0f, new Item.Properties().tab(NeutronGalaxy.TAB)));
+    public static final RegistryObject<ArmorItem> ALUMINIUM_HELMET = ItemInit.ITEMS.register("aluminium_helmet",
+            () -> new ArmorItem(ModArmorTiers.ALUMINIUM, EquipmentSlot.HEAD, new Item.Properties().tab(NeutronGalaxy.TAB)));
+    public static final RegistryObject<ArmorItem> ALUMINIUM_CHESTPLATE = ItemInit.ITEMS.register("aluminium_chestplate",
+            () -> new ArmorItem(ModArmorTiers.ALUMINIUM, EquipmentSlot.CHEST, new Item.Properties().tab(NeutronGalaxy.TAB)));
+    public static final RegistryObject<ArmorItem> ALUMINIUM_LEGGINGS = ItemInit.ITEMS.register("aluminium_leggings",
+            () -> new ArmorItem(ModArmorTiers.ALUMINIUM, EquipmentSlot.LEGS, new Item.Properties().tab(NeutronGalaxy.TAB)));
+    public static final RegistryObject<ArmorItem> ALUMINIUM_BOOTS = ItemInit.ITEMS.register("aluminium_boots",
+            () -> new ArmorItem(ModArmorTiers.ALUMINIUM, EquipmentSlot.FEET, new Item.Properties().tab(NeutronGalaxy.TAB)));
+    public static final RegistryObject<ArmorItem> BRASS_HELMET = ItemInit.ITEMS.register("brass_helmet",
+            () -> new ArmorItem(ModArmorTiers.BRASS, EquipmentSlot.HEAD, new Item.Properties().tab(NeutronGalaxy.TAB)));
+    public static final RegistryObject<ArmorItem> BRASS_CHESTPLATE = ItemInit.ITEMS.register("brass_chestplate",
+            () -> new ArmorItem(ModArmorTiers.BRASS, EquipmentSlot.CHEST, new Item.Properties().tab(NeutronGalaxy.TAB)));
+    public static final RegistryObject<ArmorItem> BRASS_LEGGINGS = ItemInit.ITEMS.register("brass_leggings",
+            () -> new ArmorItem(ModArmorTiers.BRASS, EquipmentSlot.LEGS, new Item.Properties().tab(NeutronGalaxy.TAB)));
+    public static final RegistryObject<ArmorItem> BRASS_BOOTS = ItemInit.ITEMS.register("brass_boots",
+            () -> new ArmorItem(ModArmorTiers.BRASS, EquipmentSlot.FEET, new Item.Properties().tab(NeutronGalaxy.TAB)));
+    public static final RegistryObject<ArmorItem> BRONZE_HELMET = ItemInit.ITEMS.register("bronze_helmet",
+            () -> new ArmorItem(ModArmorTiers.BRONZE, EquipmentSlot.HEAD, new Item.Properties().tab(NeutronGalaxy.TAB)));
+    public static final RegistryObject<ArmorItem> BRONZE_CHESTPLATE = ItemInit.ITEMS.register("bronze_chestplate",
+            () -> new ArmorItem(ModArmorTiers.BRONZE, EquipmentSlot.CHEST, new Item.Properties().tab(NeutronGalaxy.TAB)));
+    public static final RegistryObject<ArmorItem> BRONZE_LEGGINGS = ItemInit.ITEMS.register("bronze_leggings",
+            () -> new ArmorItem(ModArmorTiers.BRONZE, EquipmentSlot.LEGS, new Item.Properties().tab(NeutronGalaxy.TAB)));
+    public static final RegistryObject<ArmorItem> BRONZE_BOOTS = ItemInit.ITEMS.register("bronze_boots",
+            () -> new ArmorItem(ModArmorTiers.BRONZE, EquipmentSlot.FEET, new Item.Properties().tab(NeutronGalaxy.TAB)));
+    public static final RegistryObject<ArmorItem> COBALT_HELMET = ItemInit.ITEMS.register("cobalt_helmet",
+            () -> new ArmorItem(ModArmorTiers.COBALT, EquipmentSlot.HEAD, new Item.Properties().tab(NeutronGalaxy.TAB)));
+    public static final RegistryObject<ArmorItem> COBALT_CHESTPLATE = ItemInit.ITEMS.register("cobalt_chestplate",
+            () -> new ArmorItem(ModArmorTiers.COBALT, EquipmentSlot.CHEST, new Item.Properties().tab(NeutronGalaxy.TAB)));
+    public static final RegistryObject<ArmorItem> COBALT_LEGGINGS = ItemInit.ITEMS.register("cobalt_leggings",
+            () -> new ArmorItem(ModArmorTiers.COBALT, EquipmentSlot.LEGS, new Item.Properties().tab(NeutronGalaxy.TAB)));
+    public static final RegistryObject<ArmorItem> COBALT_BOOTS = ItemInit.ITEMS.register("cobalt_boots",
+            () -> new ArmorItem(ModArmorTiers.COBALT, EquipmentSlot.FEET, new Item.Properties().tab(NeutronGalaxy.TAB)));
+    public static final RegistryObject<ArmorItem> COPPER_HELMET = ItemInit.ITEMS.register("copper_helmet",
+            () -> new ArmorItem(ModArmorTiers.COPPER, EquipmentSlot.HEAD, new Item.Properties().tab(NeutronGalaxy.TAB)));
+    public static final RegistryObject<ArmorItem> COPPER_CHESTPLATE = ItemInit.ITEMS.register("copper_chestplate",
+            () -> new ArmorItem(ModArmorTiers.COPPER, EquipmentSlot.CHEST, new Item.Properties().tab(NeutronGalaxy.TAB)));
+    public static final RegistryObject<ArmorItem> COPPER_LEGGINGS = ItemInit.ITEMS.register("copper_leggings",
+            () -> new ArmorItem(ModArmorTiers.COPPER, EquipmentSlot.LEGS, new Item.Properties().tab(NeutronGalaxy.TAB)));
+    public static final RegistryObject<ArmorItem> COPPER_BOOTS = ItemInit.ITEMS.register("copper_boots",
+            () -> new ArmorItem(ModArmorTiers.COPPER, EquipmentSlot.FEET, new Item.Properties().tab(NeutronGalaxy.TAB)));
+    public static final RegistryObject<ArmorItem> NICKEL_HELMET = ItemInit.ITEMS.register("nickel_helmet",
+            () -> new ArmorItem(ModArmorTiers.NICKEL, EquipmentSlot.HEAD, new Item.Properties().tab(NeutronGalaxy.TAB)));
+    public static final RegistryObject<ArmorItem> NICKEL_CHESTPLATE = ItemInit.ITEMS.register("nickel_chestplate",
+            () -> new ArmorItem(ModArmorTiers.NICKEL, EquipmentSlot.CHEST, new Item.Properties().tab(NeutronGalaxy.TAB)));
+    public static final RegistryObject<ArmorItem> NICKEL_LEGGINGS = ItemInit.ITEMS.register("nickel_leggings",
+            () -> new ArmorItem(ModArmorTiers.NICKEL, EquipmentSlot.LEGS, new Item.Properties().tab(NeutronGalaxy.TAB)));
+    public static final RegistryObject<ArmorItem> NICKEL_BOOTS = ItemInit.ITEMS.register("nickel_boots",
+            () -> new ArmorItem(ModArmorTiers.NICKEL, EquipmentSlot.FEET, new Item.Properties().tab(NeutronGalaxy.TAB)));
+    public static final RegistryObject<ArmorItem> PLATINUM_HELMET = ItemInit.ITEMS.register("platinum_helmet",
+            () -> new ArmorItem(ModArmorTiers.PLATINUM, EquipmentSlot.HEAD, new Item.Properties().tab(NeutronGalaxy.TAB)));
+    public static final RegistryObject<ArmorItem> PLATINUM_CHESTPLATE = ItemInit.ITEMS.register("platinum_chestplate",
+            () -> new ArmorItem(ModArmorTiers.PLATINUM, EquipmentSlot.CHEST, new Item.Properties().tab(NeutronGalaxy.TAB)));
+    public static final RegistryObject<ArmorItem> PLATINUM_LEGGINGS = ItemInit.ITEMS.register("platinum_leggings",
+            () -> new ArmorItem(ModArmorTiers.PLATINUM, EquipmentSlot.LEGS, new Item.Properties().tab(NeutronGalaxy.TAB)));
+    public static final RegistryObject<ArmorItem> PLATINUM_BOOTS = ItemInit.ITEMS.register("platinum_boots",
+            () -> new ArmorItem(ModArmorTiers.PLATINUM, EquipmentSlot.FEET, new Item.Properties().tab(NeutronGalaxy.TAB)));
+    public static final RegistryObject<ArmorItem> RUBY_HELMET = ItemInit.ITEMS.register("ruby_helmet",
+            () -> new ArmorItem(ModArmorTiers.RUBY, EquipmentSlot.HEAD, new Item.Properties().tab(NeutronGalaxy.TAB)));
+    public static final RegistryObject<ArmorItem> RUBY_CHESTPLATE = ItemInit.ITEMS.register("ruby_chestplate",
+            () -> new ArmorItem(ModArmorTiers.RUBY, EquipmentSlot.CHEST, new Item.Properties().tab(NeutronGalaxy.TAB)));
+    public static final RegistryObject<ArmorItem> RUBY_LEGGINGS = ItemInit.ITEMS.register("ruby_leggings",
+            () -> new ArmorItem(ModArmorTiers.RUBY, EquipmentSlot.LEGS, new Item.Properties().tab(NeutronGalaxy.TAB)));
+    public static final RegistryObject<ArmorItem> RUBY_BOOTS = ItemInit.ITEMS.register("ruby_boots",
+            () -> new ArmorItem(ModArmorTiers.RUBY, EquipmentSlot.FEET, new Item.Properties().tab(NeutronGalaxy.TAB)));
+    public static final RegistryObject<ArmorItem> SILVER_HELMET = ItemInit.ITEMS.register("silver_helmet",
+            () -> new ArmorItem(ModArmorTiers.SILVER, EquipmentSlot.HEAD, new Item.Properties().tab(NeutronGalaxy.TAB)));
+    public static final RegistryObject<ArmorItem> SILVER_CHESTPLATE = ItemInit.ITEMS.register("silver_chestplate",
+            () -> new ArmorItem(ModArmorTiers.SILVER, EquipmentSlot.CHEST, new Item.Properties().tab(NeutronGalaxy.TAB)));
+    public static final RegistryObject<ArmorItem> SILVER_LEGGINGS = ItemInit.ITEMS.register("silver_leggings",
+            () -> new ArmorItem(ModArmorTiers.SILVER, EquipmentSlot.LEGS, new Item.Properties().tab(NeutronGalaxy.TAB)));
+    public static final RegistryObject<ArmorItem> SILVER_BOOTS = ItemInit.ITEMS.register("silver_boots",
+            () -> new ArmorItem(ModArmorTiers.SILVER, EquipmentSlot.FEET, new Item.Properties().tab(NeutronGalaxy.TAB)));
+    public static final RegistryObject<ArmorItem> STEEL_HELMET = ItemInit.ITEMS.register("steel_helmet",
+            () -> new ArmorItem(ModArmorTiers.STEEL, EquipmentSlot.HEAD, new Item.Properties().tab(NeutronGalaxy.TAB)));
+    public static final RegistryObject<ArmorItem> STEEL_CHESTPLATE = ItemInit.ITEMS.register("steel_chestplate",
+            () -> new ArmorItem(ModArmorTiers.STEEL, EquipmentSlot.CHEST, new Item.Properties().tab(NeutronGalaxy.TAB)));
+    public static final RegistryObject<ArmorItem> STEEL_LEGGINGS = ItemInit.ITEMS.register("steel_leggings",
+            () -> new ArmorItem(ModArmorTiers.STEEL, EquipmentSlot.LEGS, new Item.Properties().tab(NeutronGalaxy.TAB)));
+    public static final RegistryObject<ArmorItem> STEEL_BOOTS = ItemInit.ITEMS.register("steel_boots",
+            () -> new ArmorItem(ModArmorTiers.STEEL, EquipmentSlot.FEET, new Item.Properties().tab(NeutronGalaxy.TAB)));
+    public static final RegistryObject<ArmorItem> TIN_HELMET = ItemInit.ITEMS.register("tin_helmet",
+            () -> new ArmorItem(ModArmorTiers.TIN, EquipmentSlot.HEAD, new Item.Properties().tab(NeutronGalaxy.TAB)));
+    public static final RegistryObject<ArmorItem> TIN_CHESTPLATE = ItemInit.ITEMS.register("tin_chestplate",
+            () -> new ArmorItem(ModArmorTiers.TIN, EquipmentSlot.CHEST, new Item.Properties().tab(NeutronGalaxy.TAB)));
+    public static final RegistryObject<ArmorItem> TIN_LEGGINGS = ItemInit.ITEMS.register("tin_leggings",
+            () -> new ArmorItem(ModArmorTiers.TIN, EquipmentSlot.LEGS, new Item.Properties().tab(NeutronGalaxy.TAB)));
+    public static final RegistryObject<ArmorItem> TIN_BOOTS = ItemInit.ITEMS.register("tin_boots",
+            () -> new ArmorItem(ModArmorTiers.TIN, EquipmentSlot.FEET, new Item.Properties().tab(NeutronGalaxy.TAB)));
     
 
     public static class Foods {

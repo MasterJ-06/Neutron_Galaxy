@@ -3,13 +3,12 @@ package neutrongalaxy.masterj.neutrongalaxy.init;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.food.FoodProperties;
-import net.minecraft.world.item.BoatItem;
-import net.minecraft.world.item.SpawnEggItem;
+import net.minecraft.world.item.*;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import neutrongalaxy.masterj.neutrongalaxy.NeutronGalaxy;
-import net.minecraft.world.item.Item;
+import neutrongalaxy.masterj.neutrongalaxy.util.ModToolTiers;
 
 public class ItemInit {
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, NeutronGalaxy.MODID);
@@ -54,6 +53,117 @@ public class ItemInit {
             () -> new DRINK(new Item.Properties().tab(NeutronGalaxy.TAB).food(Foods.COFFEE)));
     public static final RegistryObject<Item> ROCKET = ItemInit.ITEMS.register("rocket",
             () -> new RocketItem(new Item.Properties().tab(NeutronGalaxy.TAB)));
+    public static final RegistryObject<SwordItem> ALUMINIUM_SWORD = ItemInit.ITEMS.register("aluminium_sword",
+            () -> new SwordItem(ModToolTiers.ALUMINIUM, 3, -2.4f, new Item.Properties().tab(NeutronGalaxy.TAB)));
+    public static final RegistryObject<PickaxeItem> ALUMINIUM_PICKAXE = ItemInit.ITEMS.register("aluminium_pickaxe",
+            () -> new PickaxeItem(ModToolTiers.ALUMINIUM, 1, -2.8f, new Item.Properties().tab(NeutronGalaxy.TAB)));
+    public static final RegistryObject<ShovelItem> ALUMINIUM_SHOVEL = ItemInit.ITEMS.register("aluminium_shovel",
+            () -> new ShovelItem(ModToolTiers.ALUMINIUM, 1.5f, -3.0f, new Item.Properties().tab(NeutronGalaxy.TAB)));
+    public static final RegistryObject<AxeItem> ALUMINIUM_AXE = ItemInit.ITEMS.register("aluminium_axe",
+            () -> new AxeItem(ModToolTiers.ALUMINIUM, 6, -3.1f, new Item.Properties().tab(NeutronGalaxy.TAB)));
+    public static final RegistryObject<HoeItem> ALUMINIUM_HOE = ItemInit.ITEMS.register("aluminium_hoe",
+            () -> new HoeItem(ModToolTiers.ALUMINIUM, -2, -1.0f, new Item.Properties().tab(NeutronGalaxy.TAB)));
+    public static final RegistryObject<SwordItem> BRASS_SWORD = ItemInit.ITEMS.register("brass_sword",
+            () -> new SwordItem(ModToolTiers.BRASS, 3, -2.4f, new Item.Properties().tab(NeutronGalaxy.TAB)));
+    public static final RegistryObject<PickaxeItem> BRASS_PICKAXE = ItemInit.ITEMS.register("brass_pickaxe",
+            () -> new PickaxeItem(ModToolTiers.BRASS, 1, -2.8f, new Item.Properties().tab(NeutronGalaxy.TAB)));
+    public static final RegistryObject<ShovelItem> BRASS_SHOVEL = ItemInit.ITEMS.register("brass_shovel",
+            () -> new ShovelItem(ModToolTiers.BRASS, 1.5f, -3.0f, new Item.Properties().tab(NeutronGalaxy.TAB)));
+    public static final RegistryObject<AxeItem> BRASS_AXE = ItemInit.ITEMS.register("brass_axe",
+            () -> new AxeItem(ModToolTiers.BRASS, 6, -3.1f, new Item.Properties().tab(NeutronGalaxy.TAB)));
+    public static final RegistryObject<HoeItem> BRASS_HOE = ItemInit.ITEMS.register("brass_hoe",
+            () -> new HoeItem(ModToolTiers.BRASS, -2, -1.0f, new Item.Properties().tab(NeutronGalaxy.TAB)));
+    public static final RegistryObject<SwordItem> BRONZE_SWORD = ItemInit.ITEMS.register("bronze_sword",
+            () -> new SwordItem(ModToolTiers.BRONZE, 3, -2.4f, new Item.Properties().tab(NeutronGalaxy.TAB)));
+    public static final RegistryObject<PickaxeItem> BRONZE_PICKAXE = ItemInit.ITEMS.register("bronze_pickaxe",
+            () -> new PickaxeItem(ModToolTiers.BRONZE, 1, -2.8f, new Item.Properties().tab(NeutronGalaxy.TAB)));
+    public static final RegistryObject<ShovelItem> BRONZE_SHOVEL = ItemInit.ITEMS.register("bronze_shovel",
+            () -> new ShovelItem(ModToolTiers.BRONZE, 1.5f, -3.0f, new Item.Properties().tab(NeutronGalaxy.TAB)));
+    public static final RegistryObject<AxeItem> BRONZE_AXE = ItemInit.ITEMS.register("bronze_axe",
+            () -> new AxeItem(ModToolTiers.BRONZE, 6, -3.1f, new Item.Properties().tab(NeutronGalaxy.TAB)));
+    public static final RegistryObject<HoeItem> BRONZE_HOE = ItemInit.ITEMS.register("bronze_hoe",
+            () -> new HoeItem(ModToolTiers.BRONZE, -2, -1.0f, new Item.Properties().tab(NeutronGalaxy.TAB)));
+    public static final RegistryObject<SwordItem> COBALT_SWORD = ItemInit.ITEMS.register("cobalt_sword",
+            () -> new SwordItem(ModToolTiers.COBALT, 3, -2.4f, new Item.Properties().tab(NeutronGalaxy.TAB)));
+    public static final RegistryObject<PickaxeItem> COBALT_PICKAXE = ItemInit.ITEMS.register("cobalt_pickaxe",
+            () -> new PickaxeItem(ModToolTiers.COBALT, 1, -2.8f, new Item.Properties().tab(NeutronGalaxy.TAB)));
+    public static final RegistryObject<ShovelItem> COBALT_SHOVEL = ItemInit.ITEMS.register("cobalt_shovel",
+            () -> new ShovelItem(ModToolTiers.COBALT, 1.5f, -3.0f, new Item.Properties().tab(NeutronGalaxy.TAB)));
+    public static final RegistryObject<AxeItem> COBALT_AXE = ItemInit.ITEMS.register("cobalt_axe",
+            () -> new AxeItem(ModToolTiers.COBALT, 6, -3.1f, new Item.Properties().tab(NeutronGalaxy.TAB)));
+    public static final RegistryObject<HoeItem> COBALT_HOE = ItemInit.ITEMS.register("cobalt_hoe",
+            () -> new HoeItem(ModToolTiers.COBALT, -2, -1.0f, new Item.Properties().tab(NeutronGalaxy.TAB)));
+    public static final RegistryObject<SwordItem> COPPER_SWORD = ItemInit.ITEMS.register("copper_sword",
+            () -> new SwordItem(ModToolTiers.COPPER, 3, -2.4f, new Item.Properties().tab(NeutronGalaxy.TAB)));
+    public static final RegistryObject<PickaxeItem> COPPER_PICKAXE = ItemInit.ITEMS.register("copper_pickaxe",
+            () -> new PickaxeItem(ModToolTiers.COPPER, 1, -2.8f, new Item.Properties().tab(NeutronGalaxy.TAB)));
+    public static final RegistryObject<ShovelItem> COPPER_SHOVEL = ItemInit.ITEMS.register("copper_shovel",
+            () -> new ShovelItem(ModToolTiers.COPPER, 1.5f, -3.0f, new Item.Properties().tab(NeutronGalaxy.TAB)));
+    public static final RegistryObject<AxeItem> COPPER_AXE = ItemInit.ITEMS.register("copper_axe",
+            () -> new AxeItem(ModToolTiers.COPPER, 6, -3.1f, new Item.Properties().tab(NeutronGalaxy.TAB)));
+    public static final RegistryObject<HoeItem> COPPER_HOE = ItemInit.ITEMS.register("copper_hoe",
+            () -> new HoeItem(ModToolTiers.COPPER, -2, -1.0f, new Item.Properties().tab(NeutronGalaxy.TAB)));
+    public static final RegistryObject<SwordItem> NICKEL_SWORD = ItemInit.ITEMS.register("nickel_sword",
+            () -> new SwordItem(ModToolTiers.NICKEL, 3, -2.4f, new Item.Properties().tab(NeutronGalaxy.TAB)));
+    public static final RegistryObject<PickaxeItem> NICKEL_PICKAXE = ItemInit.ITEMS.register("nickel_pickaxe",
+            () -> new PickaxeItem(ModToolTiers.NICKEL, 1, -2.8f, new Item.Properties().tab(NeutronGalaxy.TAB)));
+    public static final RegistryObject<ShovelItem> NICKEL_SHOVEL = ItemInit.ITEMS.register("nickel_shovel",
+            () -> new ShovelItem(ModToolTiers.NICKEL, 1.5f, -3.0f, new Item.Properties().tab(NeutronGalaxy.TAB)));
+    public static final RegistryObject<AxeItem> NICKEL_AXE = ItemInit.ITEMS.register("nickel_axe",
+            () -> new AxeItem(ModToolTiers.NICKEL, 6, -3.1f, new Item.Properties().tab(NeutronGalaxy.TAB)));
+    public static final RegistryObject<HoeItem> NICKEL_HOE = ItemInit.ITEMS.register("nickel_hoe",
+            () -> new HoeItem(ModToolTiers.NICKEL, -2, -1.0f, new Item.Properties().tab(NeutronGalaxy.TAB)));
+    public static final RegistryObject<SwordItem> PLATINUM_SWORD = ItemInit.ITEMS.register("platinum_sword",
+            () -> new SwordItem(ModToolTiers.PLATINUM, 3, -2.4f, new Item.Properties().tab(NeutronGalaxy.TAB)));
+    public static final RegistryObject<PickaxeItem> PLATINUM_PICKAXE = ItemInit.ITEMS.register("platinum_pickaxe",
+            () -> new PickaxeItem(ModToolTiers.PLATINUM, 1, -2.8f, new Item.Properties().tab(NeutronGalaxy.TAB)));
+    public static final RegistryObject<ShovelItem> PLATINUM_SHOVEL = ItemInit.ITEMS.register("platinum_shovel",
+            () -> new ShovelItem(ModToolTiers.PLATINUM, 1.5f, -3.0f, new Item.Properties().tab(NeutronGalaxy.TAB)));
+    public static final RegistryObject<AxeItem> PLATINUM_AXE = ItemInit.ITEMS.register("platinum_axe",
+            () -> new AxeItem(ModToolTiers.PLATINUM, 6, -3.1f, new Item.Properties().tab(NeutronGalaxy.TAB)));
+    public static final RegistryObject<HoeItem> PLATINUM_HOE = ItemInit.ITEMS.register("platinum_hoe",
+            () -> new HoeItem(ModToolTiers.PLATINUM, -2, -1.0f, new Item.Properties().tab(NeutronGalaxy.TAB)));
+    public static final RegistryObject<SwordItem> RUBY_SWORD = ItemInit.ITEMS.register("ruby_sword",
+            () -> new SwordItem(ModToolTiers.RUBY, 3, -2.4f, new Item.Properties().tab(NeutronGalaxy.TAB)));
+    public static final RegistryObject<PickaxeItem> RUBY_PICKAXE = ItemInit.ITEMS.register("ruby_pickaxe",
+            () -> new PickaxeItem(ModToolTiers.RUBY, 1, -2.8f, new Item.Properties().tab(NeutronGalaxy.TAB)));
+    public static final RegistryObject<ShovelItem> RUBY_SHOVEL = ItemInit.ITEMS.register("ruby_shovel",
+            () -> new ShovelItem(ModToolTiers.RUBY, 1.5f, -3.0f, new Item.Properties().tab(NeutronGalaxy.TAB)));
+    public static final RegistryObject<AxeItem> RUBY_AXE = ItemInit.ITEMS.register("ruby_axe",
+            () -> new AxeItem(ModToolTiers.RUBY, 6, -3.1f, new Item.Properties().tab(NeutronGalaxy.TAB)));
+    public static final RegistryObject<HoeItem> RUBY_HOE = ItemInit.ITEMS.register("ruby_hoe",
+            () -> new HoeItem(ModToolTiers.RUBY, -2, -1.0f, new Item.Properties().tab(NeutronGalaxy.TAB)));
+    public static final RegistryObject<SwordItem> SILVER_SWORD = ItemInit.ITEMS.register("silver_sword",
+            () -> new SwordItem(ModToolTiers.SILVER, 3, -2.4f, new Item.Properties().tab(NeutronGalaxy.TAB)));
+    public static final RegistryObject<PickaxeItem> SILVER_PICKAXE = ItemInit.ITEMS.register("silver_pickaxe",
+            () -> new PickaxeItem(ModToolTiers.SILVER, 1, -2.8f, new Item.Properties().tab(NeutronGalaxy.TAB)));
+    public static final RegistryObject<ShovelItem> SILVER_SHOVEL = ItemInit.ITEMS.register("silver_shovel",
+            () -> new ShovelItem(ModToolTiers.SILVER, 1.5f, -3.0f, new Item.Properties().tab(NeutronGalaxy.TAB)));
+    public static final RegistryObject<AxeItem> SILVER_AXE = ItemInit.ITEMS.register("silver_axe",
+            () -> new AxeItem(ModToolTiers.SILVER, 6, -3.1f, new Item.Properties().tab(NeutronGalaxy.TAB)));
+    public static final RegistryObject<HoeItem> SILVER_HOE = ItemInit.ITEMS.register("silver_hoe",
+            () -> new HoeItem(ModToolTiers.SILVER, -2, -1.0f, new Item.Properties().tab(NeutronGalaxy.TAB)));
+    public static final RegistryObject<SwordItem> STEEL_SWORD = ItemInit.ITEMS.register("steel_sword",
+            () -> new SwordItem(ModToolTiers.STEEL, 3, -2.4f, new Item.Properties().tab(NeutronGalaxy.TAB)));
+    public static final RegistryObject<PickaxeItem> STEEL_PICKAXE = ItemInit.ITEMS.register("steel_pickaxe",
+            () -> new PickaxeItem(ModToolTiers.STEEL, 1, -2.8f, new Item.Properties().tab(NeutronGalaxy.TAB)));
+    public static final RegistryObject<ShovelItem> STEEL_SHOVEL = ItemInit.ITEMS.register("steel_shovel",
+            () -> new ShovelItem(ModToolTiers.STEEL, 1.5f, -3.0f, new Item.Properties().tab(NeutronGalaxy.TAB)));
+    public static final RegistryObject<AxeItem> STEEL_AXE = ItemInit.ITEMS.register("steel_axe",
+            () -> new AxeItem(ModToolTiers.STEEL, 6, -3.1f, new Item.Properties().tab(NeutronGalaxy.TAB)));
+    public static final RegistryObject<HoeItem> STEEL_HOE = ItemInit.ITEMS.register("steel_hoe",
+            () -> new HoeItem(ModToolTiers.STEEL, -2, -1.0f, new Item.Properties().tab(NeutronGalaxy.TAB)));
+    public static final RegistryObject<SwordItem> TIN_SWORD = ItemInit.ITEMS.register("tin_sword",
+            () -> new SwordItem(ModToolTiers.TIN, 3, -2.4f, new Item.Properties().tab(NeutronGalaxy.TAB)));
+    public static final RegistryObject<PickaxeItem> TIN_PICKAXE = ItemInit.ITEMS.register("tin_pickaxe",
+            () -> new PickaxeItem(ModToolTiers.TIN, 1, -2.8f, new Item.Properties().tab(NeutronGalaxy.TAB)));
+    public static final RegistryObject<ShovelItem> TIN_SHOVEL = ItemInit.ITEMS.register("tin_shovel",
+            () -> new ShovelItem(ModToolTiers.TIN, 1.5f, -3.0f, new Item.Properties().tab(NeutronGalaxy.TAB)));
+    public static final RegistryObject<AxeItem> TIN_AXE = ItemInit.ITEMS.register("tin_axe",
+            () -> new AxeItem(ModToolTiers.TIN, 6, -3.1f, new Item.Properties().tab(NeutronGalaxy.TAB)));
+    public static final RegistryObject<HoeItem> TIN_HOE = ItemInit.ITEMS.register("tin_hoe",
+            () -> new HoeItem(ModToolTiers.TIN, -2, -1.0f, new Item.Properties().tab(NeutronGalaxy.TAB)));
+    
 
     public static class Foods {
         public static final FoodProperties COFFEE = new FoodProperties.Builder()
@@ -63,5 +173,3 @@ public class ItemInit {
                 .build();
     }
 }
-
-//add coffee as food

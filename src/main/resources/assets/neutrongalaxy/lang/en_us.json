@@ -137,6 +137,16 @@
 	"block.neutrongalaxy.venus_dust": "Venus Dust",
 	"block.neutrongalaxy.venus_rock": "Venus Rock",
 	"block.neutrongalaxy.venus_stone": "Venus Stone",
+	"block.neutrongalaxy.aluminium_block": "Aluminium Block",
+	"block.neutrongalaxy.brass_block": "Brass Block",
+	"block.neutrongalaxy.bronze_block": "Bronze Block",
+	"block.neutrongalaxy.cobalt_block": "Cobalt Block",
+	"block.neutrongalaxy.nickel_block": "Nickel Block",
+	"block.neutrongalaxy.platinum_block": "Platinum Block",
+	"block.neutrongalaxy.ruby_block": "Ruby Block",
+	"block.neutrongalaxy.silver_block": "Silver Block",
+	"block.neutrongalaxy.steel_block": "Steel Block",
+	"block.neutrongalaxy.tin_block": "Tin Block",
 
 	"entity.neutrongalaxy.rocket": "Rocket",
 

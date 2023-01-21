@@ -54,6 +54,36 @@ public class BlockInit {
     public static final RegistryObject<Block> LAUNCH_PAD = BlockInit.register("launch_pad",
             () -> new LAUNCH_PAD(BlockBehaviour.Properties.of(Material.WOOL).sound(SoundType.METAL).strength(5.0F, 6.0F)),
             new Item.Properties().tab(NeutronGalaxy.TAB));
+    public static final RegistryObject<Block> ALUMINIUM_BLOCK = BlockInit.register("aluminium_block",
+            () -> new Block(BlockBehaviour.Properties.of(Material.METAL).sound(SoundType.METAL).requiresCorrectToolForDrops().strength(5F, 6.0F)),
+            new Item.Properties().tab(NeutronGalaxy.TAB));
+    public static final RegistryObject<Block> BRASS_BLOCK = BlockInit.register("brass_block",
+            () -> new Block(BlockBehaviour.Properties.of(Material.METAL).sound(SoundType.METAL).requiresCorrectToolForDrops().strength(5F, 6.0F)),
+            new Item.Properties().tab(NeutronGalaxy.TAB));
+    public static final RegistryObject<Block> BRONZE_BLOCK = BlockInit.register("bronze_block",
+            () -> new Block(BlockBehaviour.Properties.of(Material.METAL).sound(SoundType.METAL).requiresCorrectToolForDrops().strength(5F, 6.0F)),
+            new Item.Properties().tab(NeutronGalaxy.TAB));
+    public static final RegistryObject<Block> COBALT_BLOCK = BlockInit.register("cobalt_block",
+            () -> new Block(BlockBehaviour.Properties.of(Material.METAL).sound(SoundType.METAL).requiresCorrectToolForDrops().strength(5F, 6.0F)),
+            new Item.Properties().tab(NeutronGalaxy.TAB));
+    public static final RegistryObject<Block> NICKEL_BLOCK = BlockInit.register("nickel_block",
+            () -> new Block(BlockBehaviour.Properties.of(Material.METAL).sound(SoundType.METAL).requiresCorrectToolForDrops().strength(5F, 6.0F)),
+            new Item.Properties().tab(NeutronGalaxy.TAB));
+    public static final RegistryObject<Block> PLATINUM_BLOCK = BlockInit.register("platinum_block",
+            () -> new Block(BlockBehaviour.Properties.of(Material.METAL).sound(SoundType.METAL).requiresCorrectToolForDrops().strength(5F, 6.0F)),
+            new Item.Properties().tab(NeutronGalaxy.TAB));
+    public static final RegistryObject<Block> RUBY_BLOCK = BlockInit.register("ruby_block",
+            () -> new Block(BlockBehaviour.Properties.of(Material.METAL).sound(SoundType.METAL).requiresCorrectToolForDrops().strength(5F, 6.0F)),
+            new Item.Properties().tab(NeutronGalaxy.TAB));
+    public static final RegistryObject<Block> SILVER_BLOCK = BlockInit.register("silver_block",
+            () -> new Block(BlockBehaviour.Properties.of(Material.METAL).sound(SoundType.METAL).requiresCorrectToolForDrops().strength(5F, 6.0F)),
+            new Item.Properties().tab(NeutronGalaxy.TAB));
+    public static final RegistryObject<Block> STEEL_BLOCK = BlockInit.register("steel_block",
+            () -> new Block(BlockBehaviour.Properties.of(Material.METAL).sound(SoundType.METAL).requiresCorrectToolForDrops().strength(5F, 6.0F)),
+            new Item.Properties().tab(NeutronGalaxy.TAB));
+    public static final RegistryObject<Block> TIN_BLOCK = BlockInit.register("tin_block",
+            () -> new Block(BlockBehaviour.Properties.of(Material.METAL).sound(SoundType.METAL).requiresCorrectToolForDrops().strength(5F, 6.0F)),
+            new Item.Properties().tab(NeutronGalaxy.TAB));
 
     private static <T extends Block> RegistryObject<T> register(final String name, Supplier<T> supplier, Item.Properties properties) {
         RegistryObject<T> block = BlockInit.BLOCKS.register(name, supplier);

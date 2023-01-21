@@ -1,6 +1,15 @@
 {
   "replace": false,
   "values": [
-
+    "neutrongalaxy:aluminium_block",
+    "neutrongalaxy:brass_block",
+    "neutrongalaxy:bronze_block",
+    "neutrongalaxy:cobalt_block",
+    "neutrongalaxy:nickel_block",
+    "neutrongalaxy:platinum_block",
+    "neutrongalaxy:ruby_block",
+    "neutrongalaxy:silver_block",
+    "neutrongalaxy:steel_block",
+    "neutrongalaxy:tin_block"
   ]
 }

@@ -1,0 +1,9 @@
+{
+  "parent": "forge:item/bucket",
+  "loader": "forge:fluid_container",
+  "textures": {
+    "base": "item/bucket",
+    "fluid": "neutrongalaxy:items/rocket_fuel_drips"
+  },
+  "fluid": "neutrongalaxy:rocket_fuel"
+}

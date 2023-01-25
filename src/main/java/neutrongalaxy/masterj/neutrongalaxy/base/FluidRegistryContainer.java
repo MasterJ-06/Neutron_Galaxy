@@ -169,7 +169,7 @@ public class FluidRegistryContainer {
         }
 
         public ClientExtensions flowing(String name) {
-            return flowing(name, "blocks");
+            return flowing(name, "block");
         }
 
         public ClientExtensions flowing(String name, String folder) {
@@ -183,7 +183,7 @@ public class FluidRegistryContainer {
         }
 
         public ClientExtensions overlay(String name) {
-            return overlay(name, "blocks");
+            return overlay(name, "block");
         }
 
         public ClientExtensions overlay(String name, String folder) {
@@ -197,7 +197,7 @@ public class FluidRegistryContainer {
         }
 
         public ClientExtensions still(String name) {
-            return still(name, "blocks");
+            return still(name, "block");
         }
 
         public ClientExtensions still(String name, String folder) {

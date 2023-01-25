@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "I": {
+      "item": "neutrongalaxy:iron_plate"
+    },
+    "P": {
+      "item": "neutrongalaxy:aluminium_plate"
+    }
+  },
+  "pattern": [
+    "PPP",
+    "PIP",
+    "PPP"
+  ],
+  "result": {
+    "item": "neutrongalaxy:launch_pad"
+  }
+}

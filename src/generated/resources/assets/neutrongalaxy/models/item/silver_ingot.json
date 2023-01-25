@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "neutrongalaxy:items/silver_ingot"
+  }
+}

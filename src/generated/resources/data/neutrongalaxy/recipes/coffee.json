@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "B": {
+      "item": "minecraft:cocoa_beans"
+    },
+    "C": {
+      "item": "neutrongalaxy:cup"
+    }
+  },
+  "pattern": [
+    "B",
+    "C"
+  ],
+  "result": {
+    "item": "neutrongalaxy:coffee"
+  }
+}

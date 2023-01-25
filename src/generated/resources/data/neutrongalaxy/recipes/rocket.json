@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "P": {
+      "item": "neutrongalaxy:steel_plate"
+    },
+    "S": {
+      "item": "neutrongalaxy:silicon"
+    },
+    "W": {
+      "item": "neutrongalaxy:rocket_window"
+    }
+  },
+  "pattern": [
+    " S ",
+    "SWS",
+    "PPP"
+  ],
+  "result": {
+    "item": "neutrongalaxy:rocket"
+  }
+}

@@ -9,6 +9,7 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import neutrongalaxy.masterj.neutrongalaxy.NeutronGalaxy;
+import neutrongalaxy.masterj.neutrongalaxy.base.COFFEE;
 import neutrongalaxy.masterj.neutrongalaxy.base.DRINK;
 import neutrongalaxy.masterj.neutrongalaxy.base.RocketItem;
 import neutrongalaxy.masterj.neutrongalaxy.util.ModArmorTiers;
@@ -51,10 +52,12 @@ public class ItemInit {
             () -> new Item(new Item.Properties().tab(NeutronGalaxy.TAB)));
     public static final RegistryObject<Item> SILICON = ItemInit.ITEMS.register("silicon",
             () -> new Item(new Item.Properties().tab(NeutronGalaxy.TAB)));
-    public static final RegistryObject<Item> SULFUR_INGOT = ItemInit.ITEMS.register("sulfur",
+    public static final RegistryObject<Item> SULFUR = ItemInit.ITEMS.register("sulfur",
             () -> new Item(new Item.Properties().tab(NeutronGalaxy.TAB)));
     public static final RegistryObject<Item> COFFEE = ItemInit.ITEMS.register("coffee",
-            () -> new DRINK(new Item.Properties().tab(NeutronGalaxy.TAB).food(Foods.COFFEE)));
+            () -> new COFFEE(new Item.Properties().tab(NeutronGalaxy.TAB).food(Foods.COFFEE)));
+    public static final RegistryObject<Item> CUP = ItemInit.ITEMS.register("cup",
+            () -> new Item(new Item.Properties().tab(NeutronGalaxy.TAB)));
     public static final RegistryObject<Item> ROCKET = ItemInit.ITEMS.register("rocket",
             () -> new RocketItem(new Item.Properties().tab(NeutronGalaxy.TAB)));
     public static final RegistryObject<SwordItem> ALUMINIUM_SWORD = ItemInit.ITEMS.register("aluminium_sword",

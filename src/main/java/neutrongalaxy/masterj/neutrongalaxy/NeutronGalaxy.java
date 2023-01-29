@@ -12,10 +12,7 @@ import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import neutrongalaxy.masterj.neutrongalaxy.events.ClientEvents;
-import neutrongalaxy.masterj.neutrongalaxy.init.BlockInit;
-import neutrongalaxy.masterj.neutrongalaxy.init.EntityInit;
-import neutrongalaxy.masterj.neutrongalaxy.init.FluidInit;
-import neutrongalaxy.masterj.neutrongalaxy.init.ItemInit;
+import neutrongalaxy.masterj.neutrongalaxy.init.*;
 import neutrongalaxy.masterj.neutrongalaxy.networking.ModPackets;
 import neutrongalaxy.masterj.neutrongalaxy.sounds.ModSounds;
 import org.jetbrains.annotations.NotNull;
@@ -37,6 +34,7 @@ public class NeutronGalaxy {
         FluidInit.FLUID_TYPES.register(bus);
         FluidInit.FLUIDS.register(bus);
         ModSounds.register(bus);
+        DimensionInit.register();
         bus.addListener(this::commonSetup);
         MinecraftForge.EVENT_BUS.register(this);
     }

@@ -2,6 +2,7 @@ package neutrongalaxy.masterj.neutrongalaxy.networking.packet;
 
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -13,7 +14,9 @@ import neutrongalaxy.masterj.neutrongalaxy.client.gui.screens.SpaceScreen;
 import neutrongalaxy.masterj.neutrongalaxy.entities.RocketEntity;
 import neutrongalaxy.masterj.neutrongalaxy.entities.TP;
 import neutrongalaxy.masterj.neutrongalaxy.events.ClientEvents;
+import neutrongalaxy.masterj.neutrongalaxy.init.DimensionInit;
 
+import java.awt.*;
 import java.util.Objects;
 import java.util.function.Supplier;
 
@@ -36,14 +39,22 @@ public class SendDestPlanetC2SPacket {
             // Here we are on the server
             ServerPlayer player = ctx.getSender();
             ServerLevel level = player.getLevel();
+            ResourceKey<Level> planet = ServerLevel.OVERWORLD;
 
             if (player.getRootVehicle() instanceof RocketEntity) {
                 if (player.getRootVehicle().getY() >= 151) {
-                    player.sendSystemMessage(Component.literal(SpaceScreen.destPlanet));
-                    player.getRootVehicle().changeDimension(Objects.requireNonNull(Objects.requireNonNull(player.getServer()).getLevel(ServerLevel.NETHER)), new TP());
-                    player.changeDimension(Objects.requireNonNull(player.getServer().getLevel(ServerLevel.NETHER)), new TP());
+                    switch (SpaceScreen.destPlanet) {
+                        case "moon":
+                            planet = DimensionInit.NG_MOON;
+                            break;
+                        default:
+                            planet = ServerLevel.OVERWORLD;
+                            break;
+                    }
+                    player.getRootVehicle().changeDimension(Objects.requireNonNull(Objects.requireNonNull(player.getServer()).getLevel(planet)), new TP());
+                    player.changeDimension(Objects.requireNonNull(player.getServer().getLevel(planet)), new TP());
                     // check what dimension the player is already in, don't let it move to the dimension it is already in.
-                    // This is to stop the player from falling to their death when changing dimensions. Possibly going to be replaced by a parachute armour piece.
+                    // This is to stop the player from falling to their death when changing dimension. Possibly going to be replaced by a parachute armour piece.
                     // May need to increase or decrease 2nd int for MobEffectInstance depending on the height above the planet the rocket is so slow falling stops them from dying.
                     if (!player.isOnGround()) {
                         player.addEffect(new MobEffectInstance(MobEffects.SLOW_FALLING, 250, 10));

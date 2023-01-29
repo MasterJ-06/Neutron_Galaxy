@@ -1,4 +1,4 @@
-// 1.19.2	2023-01-25T14:24:30.6711431	Recipes
+// 1.19.2	2023-01-29T16:23:38.1981784	Recipes
 9e5c6315668c9299c45b938f0cf9982651e3d152 data/neutrongalaxy/advancements/recipes/neutrongalaxy/aluminium_axe.json
 67963cdb1441d105d535a2c07a5265af0b469ee1 data/neutrongalaxy/advancements/recipes/neutrongalaxy/aluminium_block.json
 225b363bddbcac909c45f4631eb2b283860f5b1d data/neutrongalaxy/advancements/recipes/neutrongalaxy/aluminium_boots.json
@@ -115,6 +115,7 @@ aa84493bca14073d1e37b8cdd2c9a1e2abbe0065 data/neutrongalaxy/advancements/recipes
 44f8572f7e6a8ec8118dc7304800e7174bddf60d data/neutrongalaxy/advancements/recipes/neutrongalaxy/steel_plate.json
 424f96d9c4a8594c051dec9fb4d50d9a5d166da7 data/neutrongalaxy/advancements/recipes/neutrongalaxy/steel_shovel.json
 26057ef34b9f8844a1aa03de16d4aa25f2cdce80 data/neutrongalaxy/advancements/recipes/neutrongalaxy/steel_sword.json
+07841788bbc134e2d041664f0ba656d19eab0409 data/neutrongalaxy/advancements/recipes/neutrongalaxy/thermal_fabric.json
 fd76e8da810230596fbf5f6cbf286abb3c4d9d2f data/neutrongalaxy/advancements/recipes/neutrongalaxy/tin_axe.json
 06c4fb8f1bb439be78f085dcc6ff4f3bca8f4055 data/neutrongalaxy/advancements/recipes/neutrongalaxy/tin_block.json
 251b33d714c56cb84a90ada251f8408b84aef284 data/neutrongalaxy/advancements/recipes/neutrongalaxy/tin_boots.json
@@ -242,6 +243,7 @@ e0ff80b00d7e77ee884443f76a59143aeeba06da data/neutrongalaxy/recipes/steel_block.
 e6e206b80f86718d359cc16680961741d80da36b data/neutrongalaxy/recipes/steel_plate.json
 eb842655f3f90c23a327328c86c8d5216d2bb6f3 data/neutrongalaxy/recipes/steel_shovel.json
 a481ebb159133471f8f259dfdcf888e6283abeda data/neutrongalaxy/recipes/steel_sword.json
+48ad2f44df444212c4d1d443b951cff86f4dd272 data/neutrongalaxy/recipes/thermal_fabric.json
 1d174c7d3b4e04a47176963e3486e5278aba9bc2 data/neutrongalaxy/recipes/tin_axe.json
 9189e25400971d0bb34e9c4ed2387e3329ad2caf data/neutrongalaxy/recipes/tin_block.json
 815a4d26f73c456d0354e125248ae669a6901d4e data/neutrongalaxy/recipes/tin_boots.json

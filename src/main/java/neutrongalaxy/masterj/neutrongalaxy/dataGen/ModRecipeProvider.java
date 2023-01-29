@@ -914,5 +914,11 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                 .pattern("C")
                 .unlockedBy("has_cup", inventoryTrigger(ItemPredicate.Builder.item().of(ItemInit.CUP.get()).build()))
                 .save(finishedRecipeConsumer);
+        ShapedRecipeBuilder.shaped(ItemInit.THERMAL_FABRIC.get())
+                .define('S', ItemInit.SILICON.get())
+                .pattern("SS")
+                .pattern("SS")
+                .unlockedBy("has_silicon", inventoryTrigger(ItemPredicate.Builder.item().of(ItemInit.SILICON.get()).build()))
+                .save(finishedRecipeConsumer);
     }
 }

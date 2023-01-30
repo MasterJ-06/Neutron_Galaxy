@@ -258,6 +258,14 @@ public class ItemInit {
             () -> new ArmorItem(ModArmorTiers.TIN, EquipmentSlot.LEGS, new Item.Properties().tab(NeutronGalaxy.TAB)));
     public static final RegistryObject<ArmorItem> TIN_BOOTS = ItemInit.ITEMS.register("tin_boots",
             () -> new ArmorItem(ModArmorTiers.TIN, EquipmentSlot.FEET, new Item.Properties().tab(NeutronGalaxy.TAB)));
+    public static final RegistryObject<Item> THERMAL_HELMET = ItemInit.ITEMS.register("thermal_helmet",
+            () -> new Item(new Item.Properties().stacksTo(1).tab(NeutronGalaxy.TAB)));
+    public static final RegistryObject<Item> THERMAL_CHESTPLATE = ItemInit.ITEMS.register("thermal_chestplate",
+            () -> new Item(new Item.Properties().stacksTo(1).tab(NeutronGalaxy.TAB)));
+    public static final RegistryObject<Item> THERMAL_LEGGINGS = ItemInit.ITEMS.register("thermal_leggings",
+            () -> new Item(new Item.Properties().stacksTo(1).tab(NeutronGalaxy.TAB)));
+    public static final RegistryObject<Item> THERMAL_BOOTS = ItemInit.ITEMS.register("thermal_boots",
+            () -> new Item(new Item.Properties().stacksTo(1).tab(NeutronGalaxy.TAB)));
     
 
     public static class Foods {

@@ -166,5 +166,9 @@
 
 	"sounds.neutrongalaxy.space_music": "Space Music",
 	"itemGroup.neutrongalaxy": "Neutron Galaxy",
+	"curios.identifier.ng_hat": "Thermal Helmet",
+	"curios.identifier.ng_torso": "Thermal Chestplate",
+	"curios.identifier.ng_legs": "Thermal Leggings",
+	"curios.identifier.ng_feet": "Thermal Boots",
 	"key.category.masterj.neutrongalaxy": "Neutron Galaxy"
 }

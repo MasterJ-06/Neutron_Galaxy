@@ -1,0 +1,17 @@
+{
+  "required": true,
+  "package": "neutrongalaxy.masterj.neutrongalaxy.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "refmap": "neutrongalaxy.refmap.json",
+  "mixins": [
+    "PrimaryLevelDataMixin"
+  ],
+  "client": [
+    "client.WorldSelectionListMixin",
+    "client.WorldOpenFlowsMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "minVersion": "0.8"
+}

@@ -1,6 +1,11 @@
 {
   "replace": false,
   "values": [
-    "neutrongalaxy:ng_moon_ocean"
+    "neutrongalaxy:ng_moon_ocean",
+    "neutrongalaxy:ng_jupiter_ocean",
+    "neutrongalaxy:ng_saturn_ocean",
+    "neutrongalaxy:ng_neptune_ocean",
+    "neutrongalaxy:ng_uranus_ocean",
+    "neutrongalaxy:ng_pluto_ocean"
   ]
 }

@@ -47,6 +47,27 @@ public class SendDestPlanetC2SPacket {
                         case "moon":
                             planet = DimensionInit.NG_MOON;
                             break;
+                        case "mercury":
+                            planet = DimensionInit.NG_MERCURY;
+                            break;
+                        case "venus":
+                            planet = DimensionInit.NG_VENUS;
+                            break;
+                        case "mars":
+                            planet = DimensionInit.NG_MARS;
+                            break;
+                        case "jupiter":
+                            planet = DimensionInit.NG_JUPITER;
+                            break;
+                        case "saturn":
+                            planet = DimensionInit.NG_SATURN;
+                            break;
+                        case "uranus":
+                            planet = DimensionInit.NG_URANUS;
+                            break;
+                        case "neptune":
+                            planet = DimensionInit.NG_NEPTUNE;
+                            break;
                         default:
                             planet = ServerLevel.OVERWORLD;
                             break;
@@ -57,7 +78,7 @@ public class SendDestPlanetC2SPacket {
                     // This is to stop the player from falling to their death when changing dimension. Possibly going to be replaced by a parachute armour piece.
                     // May need to increase or decrease 2nd int for MobEffectInstance depending on the height above the planet the rocket is so slow falling stops them from dying.
                     if (!player.isOnGround()) {
-                        player.addEffect(new MobEffectInstance(MobEffects.SLOW_FALLING, 250, 10));
+                        player.addEffect(new MobEffectInstance(MobEffects.SLOW_FALLING, 310, 10));
                     }
                     ClientEvents.launch = false;
                 }

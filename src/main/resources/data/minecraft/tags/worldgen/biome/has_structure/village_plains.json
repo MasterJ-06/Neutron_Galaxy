@@ -2,6 +2,22 @@
   "replace": false,
   "values": [
     "neutrongalaxy:ng_moon_forest",
-    "neutrongalaxy:ng_moon_meadow"
+    "neutrongalaxy:ng_moon_meadow",
+    "neutrongalaxy:ng_mercury_forest",
+    "neutrongalaxy:ng_mercury_meadow",
+    "neutrongalaxy:ng_venus_forest",
+    "neutrongalaxy:ng_venus_meadow",
+    "neutrongalaxy:ng_mars_forest",
+    "neutrongalaxy:ng_mars_meadow",
+    "neutrongalaxy:ng_jupiter_forest",
+    "neutrongalaxy:ng_jupiter_meadow",
+    "neutrongalaxy:ng_saturn_forest",
+    "neutrongalaxy:ng_saturn_meadow",
+    "neutrongalaxy:ng_uranus_forest",
+    "neutrongalaxy:ng_uranus_meadow",
+    "neutrongalaxy:ng_neptune_forest",
+    "neutrongalaxy:ng_neptune_meadow",
+    "neutrongalaxy:ng_pluto_forest",
+    "neutrongalaxy:ng_pluto_meadow"
   ]
 }

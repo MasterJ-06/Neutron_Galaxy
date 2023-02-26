@@ -138,6 +138,10 @@ public class ModItemModelProvider extends ItemModelProvider {
         simpleArmorItem(ItemInit.TIN_CHESTPLATE);
         simpleArmorItem(ItemInit.TIN_LEGGINGS);
         simpleArmorItem(ItemInit.TIN_BOOTS);
+        simpleItem(ItemInit.THERMAL_HELMET);
+        simpleItem(ItemInit.THERMAL_CHESTPLATE);
+        simpleItem(ItemInit.THERMAL_LEGGINGS);
+        simpleItem(ItemInit.THERMAL_BOOTS);
     }
 
     private ItemModelBuilder simpleItem(final RegistryObject<Item> item) {

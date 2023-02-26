@@ -1,5 +1,6 @@
 package neutrongalaxy.masterj.neutrongalaxy.networking.packet;
 
+import net.minecraft.ChatFormatting;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
@@ -15,6 +16,8 @@ import neutrongalaxy.masterj.neutrongalaxy.entities.RocketEntity;
 import neutrongalaxy.masterj.neutrongalaxy.entities.TP;
 import neutrongalaxy.masterj.neutrongalaxy.events.ClientEvents;
 import neutrongalaxy.masterj.neutrongalaxy.init.DimensionInit;
+import neutrongalaxy.masterj.neutrongalaxy.networking.ModPackets;
+import neutrongalaxy.masterj.neutrongalaxy.temp.PlayerTempProvider;
 
 import java.awt.*;
 import java.util.Objects;
@@ -73,6 +76,34 @@ public class SendDestPlanetC2SPacket {
                             break;
                     }
                     player.getRootVehicle().changeDimension(Objects.requireNonNull(Objects.requireNonNull(player.getServer()).getLevel(planet)), new TP());
+                    if (planet == ServerLevel.OVERWORLD) {
+                        player.getCapability(PlayerTempProvider.PLAYER_TEMP).ifPresent(temp -> {
+                            temp.setTemp(0);
+//                            player.sendSystemMessage(Component.literal("Current Temp " + temp.getTemp()).withStyle(ChatFormatting.AQUA));
+                            ModPackets.sendToPlayer(new TempDataSyncS2CPacket(temp.getTemp()), player);
+                        });
+                    } else if (planet == DimensionInit.NG_MOON) {
+                        player.getCapability(PlayerTempProvider.PLAYER_TEMP).ifPresent(temp -> {
+                            temp.setTemp(0);
+//                            player.sendSystemMessage(Component.literal("Current Temp " + temp.getTemp()).withStyle(ChatFormatting.AQUA));
+                            ModPackets.sendToPlayer(new TempDataSyncS2CPacket(temp.getTemp()), player);
+                        });
+                    } else if (planet == DimensionInit.NG_MERCURY || planet == DimensionInit.NG_VENUS || planet == DimensionInit.NG_MARS || planet == DimensionInit.NG_JUPITER) {
+                        player.getCapability(PlayerTempProvider.PLAYER_TEMP).ifPresent(temp -> {
+                            temp.setTemp(1);
+//                            player.sendSystemMessage(Component.literal("Current Temp " + temp.getTemp()).withStyle(ChatFormatting.AQUA));
+                            player.sendSystemMessage(Component.literal("You will need thermal armour to go to any other planet other than the overworld or the moon.").withStyle(ChatFormatting.AQUA));
+                            ModPackets.sendToPlayer(new TempDataSyncS2CPacket(temp.getTemp()), player);
+                        });
+                    }
+                    else if (planet == DimensionInit.NG_SATURN || planet == DimensionInit.NG_URANUS || planet == DimensionInit.NG_NEPTUNE) {
+                        player.getCapability(PlayerTempProvider.PLAYER_TEMP).ifPresent(temp -> {
+                            temp.setTemp(2);
+//                            player.sendSystemMessage(Component.literal("Current Temp " + temp.getTemp()).withStyle(ChatFormatting.AQUA));
+                            player.sendSystemMessage(Component.literal("You will need thermal armour to go to any other planet other than the overworld or the moon.").withStyle(ChatFormatting.AQUA));
+                            ModPackets.sendToPlayer(new TempDataSyncS2CPacket(temp.getTemp()), player);
+                        });
+                    }
                     player.changeDimension(Objects.requireNonNull(player.getServer().getLevel(planet)), new TP());
                     // check what dimension the player is already in, don't let it move to the dimension it is already in.
                     // This is to stop the player from falling to their death when changing dimension. Possibly going to be replaced by a parachute armour piece.

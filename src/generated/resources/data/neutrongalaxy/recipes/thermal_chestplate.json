@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "T": {
+      "item": "neutrongalaxy:thermal_fabric"
+    }
+  },
+  "pattern": [
+    "T T",
+    "TTT",
+    "TTT"
+  ],
+  "result": {
+    "item": "neutrongalaxy:thermal_chestplate"
+  }
+}

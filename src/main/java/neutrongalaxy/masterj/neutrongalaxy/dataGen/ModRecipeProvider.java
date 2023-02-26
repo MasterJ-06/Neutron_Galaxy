@@ -920,5 +920,32 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                 .pattern("SS")
                 .unlockedBy("has_silicon", inventoryTrigger(ItemPredicate.Builder.item().of(ItemInit.SILICON.get()).build()))
                 .save(finishedRecipeConsumer);
+        ShapedRecipeBuilder.shaped(ItemInit.THERMAL_HELMET.get())
+                .define('T', ItemInit.THERMAL_FABRIC.get())
+                .pattern("TTT")
+                .pattern("T T")
+                .unlockedBy("has_thermal_fabric", inventoryTrigger(ItemPredicate.Builder.item().of(ItemInit.THERMAL_FABRIC.get()).build()))
+                .save(finishedRecipeConsumer);
+        ShapedRecipeBuilder.shaped(ItemInit.THERMAL_CHESTPLATE.get())
+                .define('T', ItemInit.THERMAL_FABRIC.get())
+                .pattern("T T")
+                .pattern("TTT")
+                .pattern("TTT")
+                .unlockedBy("has_thermal_fabric", inventoryTrigger(ItemPredicate.Builder.item().of(ItemInit.THERMAL_FABRIC.get()).build()))
+                .save(finishedRecipeConsumer);
+        ShapedRecipeBuilder.shaped(ItemInit.THERMAL_LEGGINGS.get())
+                .define('T', ItemInit.THERMAL_FABRIC.get())
+                .pattern("TTT")
+                .pattern("T T")
+                .pattern("T T")
+                .unlockedBy("has_thermal_fabric", inventoryTrigger(ItemPredicate.Builder.item().of(ItemInit.THERMAL_FABRIC.get()).build()))
+                .save(finishedRecipeConsumer);
+        ShapedRecipeBuilder.shaped(ItemInit.THERMAL_BOOTS.get())
+                .define('T', ItemInit.THERMAL_FABRIC.get())
+                .pattern("T T")
+                .pattern("T T")
+                .unlockedBy("has_thermal_fabric", inventoryTrigger(ItemPredicate.Builder.item().of(ItemInit.THERMAL_FABRIC.get()).build()))
+                .save(finishedRecipeConsumer);
+
     }
 }

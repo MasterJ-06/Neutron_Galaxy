@@ -34,6 +34,7 @@ import neutrongalaxy.masterj.neutrongalaxy.init.EntityInit;
 import neutrongalaxy.masterj.neutrongalaxy.init.ItemInit;
 import neutrongalaxy.masterj.neutrongalaxy.networking.ModPackets;
 import neutrongalaxy.masterj.neutrongalaxy.networking.packet.MoveRocketC2SPacket;
+import neutrongalaxy.masterj.neutrongalaxy.networking.packet.RocketMsgC2SPacket;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -51,6 +52,7 @@ public class RocketEntity extends Entity implements ITeleporter {
         this.xo = p_38294_;
         this.yo = p_38295_;
         this.zo = p_38296_;
+        ModPackets.sendToServer(new RocketMsgC2SPacket());
     }
 
     @Override

@@ -169,6 +169,8 @@
 	"neutrongalaxy.space.button.uranus": "Uranus",
 
 	"sounds.neutrongalaxy.space_music": "Space Music",
+	"death.attack.overheat": "%1$s burned to death",
+	"death.attack.overheat.player": "%1$s burned to death",
 	"itemGroup.neutrongalaxy": "Neutron Galaxy",
 	"curios.identifier.ng_hat": "Thermal Helmet",
 	"curios.identifier.ng_torso": "Thermal Chestplate",

@@ -1,7 +1,9 @@
 package neutrongalaxy.masterj.neutrongalaxy.networking.packet;
 
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.chat.Component;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.network.NetworkEvent;
@@ -10,12 +12,12 @@ import neutrongalaxy.masterj.neutrongalaxy.sounds.ModSounds;
 
 import java.util.function.Supplier;
 
-public class RequestDestPlanetS2CPacket {
-    public RequestDestPlanetS2CPacket() {
+public class dispMsgS2CPacket {
+    public dispMsgS2CPacket() {
 
     }
 
-    public RequestDestPlanetS2CPacket(FriendlyByteBuf buf) {
+    public dispMsgS2CPacket(FriendlyByteBuf buf) {
 
     }
 
@@ -36,9 +38,6 @@ public class RequestDestPlanetS2CPacket {
     @OnlyIn(Dist.CLIENT)
     private void client_stuff() {
         assert Minecraft.getInstance().player != null;
-        if (!(Minecraft.getInstance().screen instanceof SpaceScreen)) {
-            Minecraft.getInstance().player.playSound(ModSounds.SPACE_MUSIC.get(), 0.5f, 1f);
-            Minecraft.getInstance().setScreen(new SpaceScreen());
-        }
+        Minecraft.getInstance().player.sendSystemMessage(Component.literal("You will need thermal armour to go to any other planet other than the overworld or the moon.").withStyle(ChatFormatting.AQUA));
     }
 }

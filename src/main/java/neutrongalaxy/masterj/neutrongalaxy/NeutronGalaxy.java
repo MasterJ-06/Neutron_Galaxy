@@ -31,7 +31,7 @@ public class NeutronGalaxy {
 
     public NeutronGalaxy() {
         final IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
-        ClientEvents.launch = false;
+//        ClientEvents.launch = false;
         BlockInit.BLOCKS.register(bus);
         ItemInit.ITEMS.register(bus);
         EntityInit.ENTITIES.register(bus);

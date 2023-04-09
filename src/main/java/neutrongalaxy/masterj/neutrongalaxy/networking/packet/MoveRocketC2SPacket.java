@@ -4,7 +4,9 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.NetworkEvent;
 import neutrongalaxy.masterj.neutrongalaxy.entities.RocketEntity;
 import neutrongalaxy.masterj.neutrongalaxy.entities.TP;
@@ -34,16 +36,14 @@ public class MoveRocketC2SPacket {
             ServerPlayer player = ctx.getSender();
             ServerLevel level = player.getLevel();
 
-            if (player.getRootVehicle() instanceof RocketEntity) {
                 if (player.getRootVehicle().getY() <= 151) {
-                    Objects.requireNonNull(player.getVehicle()).setDeltaMovement(player.getVehicle().getDeltaMovement().add(0.0D, 0.01D, 0.0D));
+                    player.getRootVehicle().setDeltaMovement(player.getRootVehicle().getDeltaMovement().add(0.0D, 0.05D, 0.0D));
+                    player.getRootVehicle().move(MoverType.SELF, player.getRootVehicle().getDeltaMovement());
                 } else if (player.getRootVehicle().getY() >= 151) {
-                    ClientEvents.launch = false;
+                    player.getRootVehicle().setDeltaMovement(Vec3.ZERO);
+                    player.getRootVehicle().move(MoverType.SELF, player.getRootVehicle().getDeltaMovement());
                     ModPackets.sendToPlayer(new RequestDestPlanetS2CPacket(), player);
                 }
-            } else {
-                ClientEvents.launch = false;
-            }
         });
         return true;
     }

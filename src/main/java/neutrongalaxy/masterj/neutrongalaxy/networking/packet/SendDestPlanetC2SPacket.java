@@ -8,10 +8,8 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.network.NetworkEvent;
-import neutrongalaxy.masterj.neutrongalaxy.client.gui.screens.SpaceScreen;
 import neutrongalaxy.masterj.neutrongalaxy.entities.RocketEntity;
 import neutrongalaxy.masterj.neutrongalaxy.entities.TP;
 import neutrongalaxy.masterj.neutrongalaxy.events.ClientEvents;
@@ -19,21 +17,21 @@ import neutrongalaxy.masterj.neutrongalaxy.init.DimensionInit;
 import neutrongalaxy.masterj.neutrongalaxy.networking.ModPackets;
 import neutrongalaxy.masterj.neutrongalaxy.temp.PlayerTempProvider;
 
-import java.awt.*;
 import java.util.Objects;
 import java.util.function.Supplier;
 
 public class SendDestPlanetC2SPacket {
-    public SendDestPlanetC2SPacket() {
-
+    String p = "";
+    public SendDestPlanetC2SPacket(String x) {
+        this.p = x;
     }
 
     public SendDestPlanetC2SPacket(FriendlyByteBuf buf) {
-
+        this.p = buf.readUtf();
     }
 
     public void toBytes(FriendlyByteBuf buf) {
-
+        buf.writeUtf(p);
     }
 
     public boolean handle(Supplier<NetworkEvent.Context> supplier) {
@@ -46,35 +44,17 @@ public class SendDestPlanetC2SPacket {
 
             if (player.getRootVehicle() instanceof RocketEntity) {
                 if (player.getRootVehicle().getY() >= 151) {
-                    switch (SpaceScreen.destPlanet) {
-                        case "moon":
-                            planet = DimensionInit.NG_MOON;
-                            break;
-                        case "mercury":
-                            planet = DimensionInit.NG_MERCURY;
-                            break;
-                        case "venus":
-                            planet = DimensionInit.NG_VENUS;
-                            break;
-                        case "mars":
-                            planet = DimensionInit.NG_MARS;
-                            break;
-                        case "jupiter":
-                            planet = DimensionInit.NG_JUPITER;
-                            break;
-                        case "saturn":
-                            planet = DimensionInit.NG_SATURN;
-                            break;
-                        case "uranus":
-                            planet = DimensionInit.NG_URANUS;
-                            break;
-                        case "neptune":
-                            planet = DimensionInit.NG_NEPTUNE;
-                            break;
-                        default:
-                            planet = ServerLevel.OVERWORLD;
-                            break;
-                    }
+                    planet = switch (this.p) {
+                        case "moon" -> DimensionInit.NG_MOON;
+                        case "mercury" -> DimensionInit.NG_MERCURY;
+                        case "venus" -> DimensionInit.NG_VENUS;
+                        case "mars" -> DimensionInit.NG_MARS;
+                        case "jupiter" -> DimensionInit.NG_JUPITER;
+                        case "saturn" -> DimensionInit.NG_SATURN;
+                        case "uranus" -> DimensionInit.NG_URANUS;
+                        case "neptune" -> DimensionInit.NG_NEPTUNE;
+                        default -> ServerLevel.OVERWORLD;
+                    };
                     player.getRootVehicle().changeDimension(Objects.requireNonNull(Objects.requireNonNull(player.getServer()).getLevel(planet)), new TP());
                     if (planet == ServerLevel.OVERWORLD) {
                         player.getCapability(PlayerTempProvider.PLAYER_TEMP).ifPresent(temp -> {
@@ -111,10 +91,10 @@ public class SendDestPlanetC2SPacket {
                     if (!player.isOnGround()) {
                         player.addEffect(new MobEffectInstance(MobEffects.SLOW_FALLING, 310, 10));
                     }
-                    ClientEvents.launch = false;
+//                    ClientEvents.launch = false;
                 }
             } else {
-                ClientEvents.launch = false;
+//                ClientEvents.launch = false;
             }
         });
         return true;

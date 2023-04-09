@@ -36,6 +36,10 @@ public class ModPackets {
                 .consumerMainThread(TempDataSyncS2CPacket::handle).add();
         net.messageBuilder(RocketMsgC2SPacket.class, id(), NetworkDirection.PLAY_TO_SERVER).decoder(RocketMsgC2SPacket::new).encoder(RocketMsgC2SPacket::toBytes)
                 .consumerMainThread(RocketMsgC2SPacket::handle).add();
+        net.messageBuilder(dispMsgS2CPacket.class, id(), NetworkDirection.PLAY_TO_CLIENT).decoder(dispMsgS2CPacket::new).encoder(dispMsgS2CPacket::toBytes)
+                .consumerMainThread(dispMsgS2CPacket::handle).add();
+        net.messageBuilder(MoveRocketDownC2SPacket.class, id(), NetworkDirection.PLAY_TO_SERVER).decoder(MoveRocketDownC2SPacket::new).encoder(MoveRocketDownC2SPacket::toBytes)
+                .consumerMainThread(MoveRocketDownC2SPacket::handle).add();
     }
 
     public static <MSG> void sendToServer(MSG message) {

@@ -72,6 +72,6 @@ private final Map<RocketEntity.Type, Pair<ResourceLocation, rocket_model>> rocke
     }
 
     public Pair<ResourceLocation, rocket_model> getModelWithLocation(RocketEntity rocket) {
-        return this.rocketResources.get(rocket.getBoatType());
+        return this.rocketResources.get(rocket.getRocketType());
     }
 }

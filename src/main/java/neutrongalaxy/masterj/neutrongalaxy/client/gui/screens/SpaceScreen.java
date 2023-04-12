@@ -40,10 +40,10 @@ public class SpaceScreen extends Screen {
         this.exitButtons.clear();
         this.exitButtons.add(this.addRenderableWidget(new ImageButton(-40, 80, 75, 75, 0, 0, 0, new ResourceLocation(NeutronGalaxy.MODID, "textures/gui/sun.png"), 75, 75, (p_95930_) -> {
             this.minecraft.setScreen(null);
-            Minecraft.getInstance().player.sendSystemMessage(Component.literal("Sun"));
-            this.destPlanet = "sun";
+            Minecraft.getInstance().player.sendSystemMessage(Component.literal("You cannot go to the sun"));
+//            this.destPlanet = "sun";
             Minecraft.getInstance().getSoundManager().stop();
-            ModPackets.sendToServer(new SendDestPlanetC2SPacket(SpaceScreen.destPlanet));
+//            ModPackets.sendToServer(new SendDestPlanetC2SPacket(SpaceScreen.destPlanet));
         }, Component.translatable("neutrongalaxy.space.button.sun"))));
         this.exitButtons.add(this.addRenderableWidget(new ImageButton(40, 90, 20, 20, 0, 0, 0, new ResourceLocation(NeutronGalaxy.MODID, "textures/gui/mercury.png"), 20, 20, (p_95930_) -> {
             this.minecraft.setScreen(null);

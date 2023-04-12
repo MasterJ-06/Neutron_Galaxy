@@ -86,6 +86,6 @@ public class DimensionInit {
     public static final ResourceKey<NoiseGeneratorSettings> NG_URANUS_NOISE_SETTINGS = ResourceKey.create(Registry.NOISE_GENERATOR_SETTINGS_REGISTRY, new ResourceLocation(NeutronGalaxy.MODID, "ng_uranus"));
 
     public static void register() {
-        System.out.println("Registering Dimensions for " + NeutronGalaxy.MODID);
+        NeutronGalaxy.LOGGER.info("Registering Dimensions for " + NeutronGalaxy.MODID);
     }
 }

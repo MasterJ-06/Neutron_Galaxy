@@ -40,10 +40,10 @@ public class SendDestPlanetC2SPacket {
             // Here we are on the server
             ServerPlayer player = ctx.getSender();
             ServerLevel level = player.getLevel();
-            ResourceKey<Level> planet = ServerLevel.OVERWORLD;
+            ResourceKey<Level> planet;
 
-            if (player.getRootVehicle() instanceof RocketEntity) {
-                if (player.getRootVehicle().getY() >= 151) {
+//            if (player.getRootVehicle() instanceof RocketEntity) {
+//                if (player.getRootVehicle().getY() >= 151) {
                     planet = switch (this.p) {
                         case "moon" -> DimensionInit.NG_MOON;
                         case "mercury" -> DimensionInit.NG_MERCURY;
@@ -55,6 +55,8 @@ public class SendDestPlanetC2SPacket {
                         case "neptune" -> DimensionInit.NG_NEPTUNE;
                         default -> ServerLevel.OVERWORLD;
                     };
+                    System.out.println(this.p);
+                    System.out.println(planet);
                     player.getRootVehicle().changeDimension(Objects.requireNonNull(Objects.requireNonNull(player.getServer()).getLevel(planet)), new TP());
                     if (planet == ServerLevel.OVERWORLD) {
                         player.getCapability(PlayerTempProvider.PLAYER_TEMP).ifPresent(temp -> {
@@ -92,10 +94,8 @@ public class SendDestPlanetC2SPacket {
                         player.addEffect(new MobEffectInstance(MobEffects.SLOW_FALLING, 310, 10));
                     }
 //                    ClientEvents.launch = false;
-                }
-            } else {
-//                ClientEvents.launch = false;
-            }
+//                }
+//            }
         });
         return true;
     }

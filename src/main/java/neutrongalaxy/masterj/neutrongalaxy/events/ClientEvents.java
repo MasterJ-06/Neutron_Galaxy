@@ -37,44 +37,45 @@ public class ClientEvents {
             if (KeyBinding.LAUNCH_KEY.consumeClick()) {
 //                launch = true;
                 assert Minecraft.getInstance().player != null;
-                if (Minecraft.getInstance().player.getRootVehicle() instanceof RocketEntity) {
+                if (Minecraft.getInstance().player.getRootVehicle() instanceof RocketEntity entity) {
                     launch = true;
-                    move_rocket();
+                    entity.setLaunch(launch);
+//                    move_rocket();
 //                    ModPackets.sendToServer(new MoveRocketC2SPacket());
                 }
             }
         }
 
-        @SubscribeEvent
-        public static void ticks(TickEvent.PlayerTickEvent event) {
-            if (Minecraft.getInstance().player != null) {
-                if (Minecraft.getInstance().player.getRootVehicle() instanceof RocketEntity) {
-                    if (launch) {
-                        move_rocket();
-//                        ModPackets.sendToServer(new MoveRocketC2SPacket());
-                    }
-                } else {
-                    launch = false;
-                    ModPackets.sendToServer(new MoveRocketDownC2SPacket());
-                }
-            }
-        }
-
-        private static void move_rocket() {
-            assert Minecraft.getInstance().player != null;
-            if (Minecraft.getInstance().player.getRootVehicle().getY() <= 151) {
-                Minecraft.getInstance().player.getRootVehicle().setDeltaMovement(Minecraft.getInstance().player.getRootVehicle().getDeltaMovement().add(0.0D, 0.01D, 0.0D));
-                Minecraft.getInstance().player.getRootVehicle().move(MoverType.SELF, Minecraft.getInstance().player.getRootVehicle().getDeltaMovement());
-            } else if (Minecraft.getInstance().player.getRootVehicle().getY() >= 151) {
-                Minecraft.getInstance().player.getRootVehicle().setDeltaMovement(Vec3.ZERO);
-                Minecraft.getInstance().player.getRootVehicle().move(MoverType.SELF, Minecraft.getInstance().player.getRootVehicle().getDeltaMovement());
-                assert Minecraft.getInstance().player != null;
-                if (!(Minecraft.getInstance().screen instanceof SpaceScreen)) {
-                    Minecraft.getInstance().player.playSound(ModSounds.SPACE_MUSIC.get(), 0.5f, 1f);
-                    Minecraft.getInstance().setScreen(new SpaceScreen());
-                }
-            }
-        }
+//        @SubscribeEvent
+//        public static void ticks(TickEvent.PlayerTickEvent event) {
+//            if (Minecraft.getInstance().player != null) {
+//                if (Minecraft.getInstance().player.getRootVehicle() instanceof RocketEntity) {
+//                    if (launch) {
+//                        move_rocket();
+////                        ModPackets.sendToServer(new MoveRocketC2SPacket());
+//                    }
+//                } else {
+//                    launch = false;
+//                    ModPackets.sendToServer(new MoveRocketDownC2SPacket());
+//                }
+//            }
+//        }
+//
+//        private static void move_rocket() {
+//            assert Minecraft.getInstance().player != null;
+//            if (Minecraft.getInstance().player.getRootVehicle().getY() <= 151) {
+//                Minecraft.getInstance().player.getRootVehicle().setDeltaMovement(Minecraft.getInstance().player.getRootVehicle().getDeltaMovement().add(0.0D, 0.01D, 0.0D));
+//                Minecraft.getInstance().player.getRootVehicle().move(MoverType.SELF, Minecraft.getInstance().player.getRootVehicle().getDeltaMovement());
+//            } else if (Minecraft.getInstance().player.getRootVehicle().getY() >= 151) {
+//                Minecraft.getInstance().player.getRootVehicle().setDeltaMovement(Vec3.ZERO);
+//                Minecraft.getInstance().player.getRootVehicle().move(MoverType.SELF, Minecraft.getInstance().player.getRootVehicle().getDeltaMovement());
+//                assert Minecraft.getInstance().player != null;
+//                if (!(Minecraft.getInstance().screen instanceof SpaceScreen)) {
+//                    Minecraft.getInstance().player.playSound(ModSounds.SPACE_MUSIC.get(), 0.5f, 1f);
+//                    Minecraft.getInstance().setScreen(new SpaceScreen());
+//                }
+//            }
+//        }
     }
 
     @Mod.EventBusSubscriber(modid = NeutronGalaxy.MODID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)

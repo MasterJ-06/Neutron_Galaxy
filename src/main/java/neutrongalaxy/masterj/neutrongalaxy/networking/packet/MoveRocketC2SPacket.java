@@ -36,14 +36,15 @@ public class MoveRocketC2SPacket {
             ServerPlayer player = ctx.getSender();
             ServerLevel level = player.getLevel();
 
-                if (player.getRootVehicle().getY() <= 151) {
-                    player.getRootVehicle().setDeltaMovement(player.getRootVehicle().getDeltaMovement().add(0.0D, 0.05D, 0.0D));
-                    player.getRootVehicle().move(MoverType.SELF, player.getRootVehicle().getDeltaMovement());
-                } else if (player.getRootVehicle().getY() >= 151) {
-                    player.getRootVehicle().setDeltaMovement(Vec3.ZERO);
-                    player.getRootVehicle().move(MoverType.SELF, player.getRootVehicle().getDeltaMovement());
-                    ModPackets.sendToPlayer(new RequestDestPlanetS2CPacket(), player);
-                }
+//                if (player.getRootVehicle().getY() <= 151) {
+//                    player.getRootVehicle().setDeltaMovement(player.getRootVehicle().getDeltaMovement().add(0.0D, 0.05D, 0.0D));
+//                    player.getRootVehicle().move(MoverType.SELF, player.getRootVehicle().getDeltaMovement());
+//                } else if (player.getRootVehicle().getY() >= 151) {
+//                    player.getRootVehicle().setDeltaMovement(Vec3.ZERO);
+//                    player.getRootVehicle().move(MoverType.SELF, player.getRootVehicle().getDeltaMovement());
+//                    ModPackets.sendToPlayer(new RequestDestPlanetS2CPacket(), player);
+//                }
+            ModPackets.sendToPlayer(new RequestDestPlanetS2CPacket(), player);
         });
         return true;
     }

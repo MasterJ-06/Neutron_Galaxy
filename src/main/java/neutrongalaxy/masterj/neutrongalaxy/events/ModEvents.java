@@ -91,10 +91,10 @@ public class ModEvents {
     @SubscribeEvent
     @OnlyIn(Dist.CLIENT)
     public static void onPlayerTick(TickEvent.PlayerTickEvent event) {
-        if(event.side == LogicalSide.SERVER) {
+//        if(event.side == LogicalSide.CLIENT) {
             try {
                 event.player.getCapability(PlayerTempProvider.PLAYER_TEMP).ifPresent(temp -> {
-                    if (event.player.getRandom().nextFloat() < 1f) {
+                    if (event.player.getRandom().nextFloat() < 3f) {
                         assert Minecraft.getInstance().player != null;
                         try {
                             String log = "";
@@ -111,7 +111,7 @@ public class ModEvents {
                                 ClientTempData.set(2);
                             } else {
                                 ClientTempData.set(0);
-                            }
+                            } // does not work on dedicated server
                             if (ClientTempData.getPlayerTemp() == 1) {
                                 event.player.hurt(new DamageSource("overheat").bypassArmor(), 1);
                             } else if (ClientTempData.getPlayerTemp() == 2) {
@@ -126,6 +126,6 @@ public class ModEvents {
             } catch (NullPointerException e) {
 //                NeutronGalaxy.LOGGER.info("The player must not be in the world yet.");
             }
-        }
+//        }
     }
 }

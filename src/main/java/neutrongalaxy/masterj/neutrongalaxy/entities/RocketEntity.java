@@ -1,16 +1,14 @@
 package neutrongalaxy.masterj.neutrongalaxy.entities;
 
 import com.google.common.collect.Lists;
-import net.minecraft.client.CameraType;
-//import net.minecraft.client.Minecraft;
-import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -26,19 +24,29 @@ import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.util.ITeleporter;
 import net.minecraftforge.network.NetworkHooks;
-import neutrongalaxy.masterj.neutrongalaxy.client.gui.screens.SpaceScreen;
 import neutrongalaxy.masterj.neutrongalaxy.init.EntityInit;
 import neutrongalaxy.masterj.neutrongalaxy.init.ItemInit;
 import neutrongalaxy.masterj.neutrongalaxy.networking.ModPackets;
 import neutrongalaxy.masterj.neutrongalaxy.networking.packet.MoveRocketC2SPacket;
-import neutrongalaxy.masterj.neutrongalaxy.networking.packet.RequestDestPlanetS2CPacket;
-import neutrongalaxy.masterj.neutrongalaxy.networking.packet.RocketMsgC2SPacket;
-import neutrongalaxy.masterj.neutrongalaxy.sounds.ModSounds;
 
 import javax.annotation.Nullable;
 import java.util.List;
 
 public class RocketEntity extends Entity implements ITeleporter {
+
+    private static final EntityDataAccessor<Integer> DATA_ID_HURT = SynchedEntityData.defineId(RocketEntity.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Integer> DATA_ID_HURTDIR = SynchedEntityData.defineId(RocketEntity.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Float> DATA_ID_DAMAGE = SynchedEntityData.defineId(RocketEntity.class, EntityDataSerializers.FLOAT);
+    private static final EntityDataAccessor<Integer> DATA_ID_TYPE = SynchedEntityData.defineId(RocketEntity.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Boolean> DATA_LAUNCH = SynchedEntityData.defineId(RocketEntity.class, EntityDataSerializers.BOOLEAN);
+    private float outOfControlTicks;
+    private float deltaRotation;
+    private int lerpSteps;
+    private double lerpX;
+    private double lerpY;
+    private double lerpZ;
+    private double lerpYRot;
+    private double lerpXRot;
 
     public RocketEntity(EntityType<? extends RocketEntity> type, Level level) {
         super(type, level);
@@ -51,7 +59,6 @@ public class RocketEntity extends Entity implements ITeleporter {
         this.xo = p_38294_;
         this.yo = p_38295_;
         this.zo = p_38296_;
-//        ModPackets.sendToServer(new RocketMsgC2SPacket());
     }
 
     @Override
@@ -83,33 +90,16 @@ public class RocketEntity extends Entity implements ITeleporter {
 
         super.tick();
         if (this.getLaunch()) {
-            if (this.getY() <= 151) {
-                this.setDeltaMovement(this.getDeltaMovement().add(0.0D, 0.01D, 0.0D));
-//                this.move(MoverType.SELF, this.getDeltaMovement());
-            } else if (this.getY() >= 151) {
-                this.setDeltaMovement(Vec3.ZERO);
-//                this.move(MoverType.SELF, this.getDeltaMovement());
-                ModPackets.sendToServer(new MoveRocketC2SPacket());
+            if (!this.hasExactlyOnePlayerPassenger()) {
                 this.setLaunch(false);
             }
-            this.move(MoverType.SELF, this.getDeltaMovement());
-        } else if (!this.getLaunch()) {
-            this.setDeltaMovement(this.getDeltaMovement().add(0.0D, -0.02D, 0.0D));
+            ModPackets.sendToServer(new MoveRocketC2SPacket());
             this.move(MoverType.SELF, this.getDeltaMovement());
         } else {
-            this.setDeltaMovement(Vec3.ZERO);
+            this.setDeltaMovement(this.getDeltaMovement().add(0.0D, -0.02D, 0.0D));
+            this.move(MoverType.SELF, this.getDeltaMovement());
         }
-
         this.checkInsideBlocks();
-        if (!(this.getFirstPassenger() instanceof LocalPlayer)) {
-            this.setLaunch(false);
-        }
-//        this.canChangeDimensions();
-//        if (ClientEvents.launch) {
-//            ModPackets.sendToServer(new MoveRocketC2SPacket());
-//            this.getControllingPassenger();
-//        }
-//        ModPackets.sendToServer(new MoveRocketC2SPacket());
     }
 
     @Override
@@ -126,20 +116,6 @@ public class RocketEntity extends Entity implements ITeleporter {
     public Packet<?> getAddEntityPacket() {
         return NetworkHooks.getEntitySpawningPacket(this);
     }
-
-    private static final EntityDataAccessor<Integer> DATA_ID_HURT = SynchedEntityData.defineId(RocketEntity.class, EntityDataSerializers.INT);
-    private static final EntityDataAccessor<Integer> DATA_ID_HURTDIR = SynchedEntityData.defineId(RocketEntity.class, EntityDataSerializers.INT);
-    private static final EntityDataAccessor<Float> DATA_ID_DAMAGE = SynchedEntityData.defineId(RocketEntity.class, EntityDataSerializers.FLOAT);
-    private static final EntityDataAccessor<Integer> DATA_ID_TYPE = SynchedEntityData.defineId(RocketEntity.class, EntityDataSerializers.INT);
-    private static final EntityDataAccessor<Boolean> DATA_LAUNCH = SynchedEntityData.defineId(RocketEntity.class, EntityDataSerializers.BOOLEAN);
-    private float outOfControlTicks;
-    private float deltaRotation;
-    private int lerpSteps;
-    private double lerpX;
-    private double lerpY;
-    private double lerpZ;
-    private double lerpYRot;
-    private double lerpXRot;
 
     public boolean canCollideWith(Entity p_38376_) {
         return canVehicleCollide(this, p_38376_);
@@ -259,12 +235,13 @@ public class RocketEntity extends Entity implements ITeleporter {
         return super.getDismountLocationForPassenger(p_38357_);
     }
 
-    public InteractionResult interact(Player p_38330_, InteractionHand p_38331_) {
-        if (p_38330_.isSecondaryUseActive()) {
+    public InteractionResult interact(Player pPlayer, InteractionHand pHand) {
+        if (pPlayer.isSecondaryUseActive()) {
             return InteractionResult.PASS;
         } else if (this.outOfControlTicks < 60.0F) {
             if (!this.level.isClientSide) {
-                return p_38330_.startRiding(this) ? InteractionResult.CONSUME : InteractionResult.PASS;
+                pPlayer.sendSystemMessage(Component.literal("You will need thermal armour to go to any other planet other than the overworld or the moon.").withStyle(ChatFormatting.AQUA));
+                return pPlayer.startRiding(this) ? InteractionResult.CONSUME : InteractionResult.PASS;
             } else {
                 return InteractionResult.SUCCESS;
             }

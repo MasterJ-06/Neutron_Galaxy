@@ -24,7 +24,11 @@ version = '1.0'
 group = 'neutrongalaxy.masterj.neutrongalaxy'
 archivesBaseName = 'neutrongalaxy'
 
-java.toolchain.languageVersion = JavaLanguageVersion.of(17)
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
+}
 
 println "Java: ${System.getProperty 'java.version'}, JVM: ${System.getProperty 'java.vm.version'} (${System.getProperty 'java.vendor'}), Arch: ${System.getProperty 'os.arch'}"
 minecraft {
@@ -136,7 +140,7 @@ jar {
                 "Specification-Vendor"    : "MasterJ",
                 "Specification-Version"   : "1",
                 "Implementation-Title"    : project.name,
-                "Implementation-Version"  : project.jar.archiveVersion,
+                "Implementation-Version"  : project.version,
                 "Implementation-Vendor"   : "MasterJ",
                 "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
                 "MixinConfigs": "${modid}.mixins.json"

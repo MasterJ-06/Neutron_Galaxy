@@ -3,19 +3,27 @@ package neutrongalaxy.masterj.neutrongalaxy.entities;
 import com.google.common.collect.Lists;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
+import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.monster.piglin.PiglinAi;
+import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.vehicle.ContainerEntity;
 import net.minecraft.world.entity.vehicle.DismountHelper;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.ChestMenu;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.GameRules;
@@ -32,8 +40,7 @@ import neutrongalaxy.masterj.neutrongalaxy.networking.packet.MoveRocketC2SPacket
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class RocketEntity extends Entity implements ITeleporter {
-
+public class RocketEntity extends Entity implements ITeleporter, ContainerEntity, HasCustomInventoryScreen {
     private static final EntityDataAccessor<Integer> DATA_ID_HURT = SynchedEntityData.defineId(RocketEntity.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> DATA_ID_HURTDIR = SynchedEntityData.defineId(RocketEntity.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Float> DATA_ID_DAMAGE = SynchedEntityData.defineId(RocketEntity.class, EntityDataSerializers.FLOAT);
@@ -103,13 +110,13 @@ public class RocketEntity extends Entity implements ITeleporter {
     }
 
     @Override
-    protected void readAdditionalSaveData(CompoundTag p_20052_) {
-
+    protected void readAdditionalSaveData(CompoundTag pCompound) {
+        this.readChestVehicleSaveData(pCompound);
     }
 
     @Override
-    protected void addAdditionalSaveData(CompoundTag p_20139_) {
-
+    protected void addAdditionalSaveData(CompoundTag pCompound) {
+        this.addChestVehicleSaveData(pCompound);
     }
 
     @Override
@@ -158,10 +165,6 @@ public class RocketEntity extends Entity implements ITeleporter {
         }
     }
 
-    protected void destroy(DamageSource p_219862_) {
-        this.spawnAtLocation(this.getDropItem());
-    }
-
     public void push(Entity p_38373_) {
         if (p_38373_ instanceof RocketEntity) {
             if (p_38373_.getBoundingBox().minY < this.getBoundingBox().maxY) {
@@ -203,9 +206,10 @@ public class RocketEntity extends Entity implements ITeleporter {
     }
 
     @Override
-    public Vec3 getDismountLocationForPassenger(LivingEntity p_38357_) {
+    public Vec3 getDismountLocationForPassenger(LivingEntity pPassenger) {
 //        Minecraft.getInstance().options.setCameraType(CameraType.FIRST_PERSON);
-        Vec3 vec3 = getCollisionHorizontalEscapeVector(this.getBbWidth() * Mth.SQRT_OF_TWO, p_38357_.getBbWidth(), p_38357_.getYRot());
+//        ModPackets.sendToServer(new ChangeCameraC2SPacket(0));
+        Vec3 vec3 = getCollisionHorizontalEscapeVector(this.getBbWidth() * Mth.SQRT_OF_TWO, pPassenger.getBbWidth(), pPassenger.getYRot());
         double d0 = this.getX() + vec3.x;
         double d1 = this.getZ() + vec3.z;
         BlockPos blockpos = new BlockPos(d0, this.getBoundingBox().maxY, d1);
@@ -222,22 +226,23 @@ public class RocketEntity extends Entity implements ITeleporter {
                 list.add(new Vec3(d0, (double)blockpos1.getY() + d3, d1));
             }
 
-            for(Pose pose : p_38357_.getDismountPoses()) {
+            for(Pose pose : pPassenger.getDismountPoses()) {
                 for(Vec3 vec31 : list) {
-                    if (DismountHelper.canDismountTo(this.level, vec31, p_38357_, pose)) {
-                        p_38357_.setPose(pose);
+                    if (DismountHelper.canDismountTo(this.level, vec31, pPassenger, pose)) {
+                        pPassenger.setPose(pose);
                         return vec31;
                     }
                 }
             }
         }
 
-        return super.getDismountLocationForPassenger(p_38357_);
+        return super.getDismountLocationForPassenger(pPassenger);
     }
 
     public InteractionResult interact(Player pPlayer, InteractionHand pHand) {
         if (pPlayer.isSecondaryUseActive()) {
-            return InteractionResult.PASS;
+            this.interactWithChestVehicle(this::gameEvent, pPlayer);
+            return InteractionResult.SUCCESS;
         } else if (this.outOfControlTicks < 60.0F) {
             if (!this.level.isClientSide) {
                 pPlayer.sendSystemMessage(Component.literal("You will need thermal armour to go to any other planet other than the overworld or the moon.").withStyle(ChatFormatting.AQUA));
@@ -248,6 +253,152 @@ public class RocketEntity extends Entity implements ITeleporter {
         } else {
             return InteractionResult.PASS;
         }
+    }
+
+    private static final int CONTAINER_SIZE = 27;
+    private NonNullList<ItemStack> itemStacks = NonNullList.withSize(27, ItemStack.EMPTY);
+    @Nullable
+    private ResourceLocation lootTable;
+    private long lootTableSeed;
+
+    protected void destroy(DamageSource pDamageSource) {
+        this.spawnAtLocation(this.getDropItem());
+        this.chestVehicleDestroyed(pDamageSource, this.level, this);
+    }
+
+    public void remove(Entity.RemovalReason pReason) {
+        if (!this.level.isClientSide && pReason.shouldDestroy()) {
+            Containers.dropContents(this.level, this, this);
+        }
+
+        super.remove(pReason);
+    }
+
+    public void openCustomInventoryScreen(Player pPlayer) {
+        pPlayer.openMenu(this);
+        if (!pPlayer.level.isClientSide) {
+            this.gameEvent(GameEvent.CONTAINER_OPEN, pPlayer);
+            PiglinAi.angerNearbyPiglins(pPlayer, true);
+        }
+
+    }
+
+    public void clearContent() {
+        this.clearChestVehicleContent();
+    }
+
+    /**
+     * Returns the number of slots in the inventory.
+     */
+    public int getContainerSize() {
+        return 27;
+    }
+
+    /**
+     * Returns the stack in the given slot.
+     */
+    public ItemStack getItem(int pSlot) {
+        return this.getChestVehicleItem(pSlot);
+    }
+
+    /**
+     * Removes up to a specified number of items from an inventory slot and returns them in a new stack.
+     */
+    public ItemStack removeItem(int pSlot, int pAmount) {
+        return this.removeChestVehicleItem(pSlot, pAmount);
+    }
+
+    /**
+     * Removes a stack from the given slot and returns it.
+     */
+    public ItemStack removeItemNoUpdate(int pSlot) {
+        return this.removeChestVehicleItemNoUpdate(pSlot);
+    }
+
+    /**
+     * Sets the given item stack to the specified slot in the inventory (can be crafting or armor sections).
+     */
+    public void setItem(int pSlot, ItemStack pStack) {
+        this.setChestVehicleItem(pSlot, pStack);
+    }
+
+    public SlotAccess getSlot(int pSlot) {
+        return this.getChestVehicleSlot(pSlot);
+    }
+
+    /**
+     * For block entities, ensures the chunk containing the block entity is saved to disk later - the game won't think it
+     * hasn't changed and skip it.
+     */
+    public void setChanged() {
+    }
+
+    /**
+     * Don't rename this method to canInteractWith due to conflicts with Container
+     */
+    public boolean stillValid(Player pPlayer) {
+        return this.isChestVehicleStillValid(pPlayer);
+    }
+
+    @Nullable
+    public AbstractContainerMenu createMenu(int pContainerId, Inventory pPlayerInventory, Player pPlayer) {
+        if (this.lootTable != null && pPlayer.isSpectator()) {
+            return null;
+        } else {
+            this.unpackLootTable(pPlayerInventory.player);
+            return ChestMenu.threeRows(pContainerId, pPlayerInventory, this);
+        }
+    }
+
+    public void unpackLootTable(@Nullable Player pPlayer) {
+        this.unpackChestVehicleLootTable(pPlayer);
+    }
+
+    @Nullable
+    public ResourceLocation getLootTable() {
+        return this.lootTable;
+    }
+
+    public void setLootTable(@Nullable ResourceLocation pLootTable) {
+        this.lootTable = pLootTable;
+    }
+
+    public long getLootTableSeed() {
+        return this.lootTableSeed;
+    }
+
+    public void setLootTableSeed(long pLootTableSeed) {
+        this.lootTableSeed = pLootTableSeed;
+    }
+
+    public NonNullList<ItemStack> getItemStacks() {
+        return this.itemStacks;
+    }
+
+    public void clearItemStacks() {
+        this.itemStacks = NonNullList.withSize(this.getContainerSize(), ItemStack.EMPTY);
+    }
+
+    // Forge Start
+    private net.minecraftforge.common.util.LazyOptional<?> itemHandler = net.minecraftforge.common.util.LazyOptional.of(() -> new net.minecraftforge.items.wrapper.InvWrapper(this));
+
+    @Override
+    public <T> net.minecraftforge.common.util.LazyOptional<T> getCapability(net.minecraftforge.common.capabilities.Capability<T> capability, @Nullable net.minecraft.core.Direction facing) {
+        if (this.isAlive() && capability == net.minecraftforge.common.capabilities.ForgeCapabilities.ITEM_HANDLER)
+            return itemHandler.cast();
+        return super.getCapability(capability, facing);
+    }
+
+    @Override
+    public void invalidateCaps() {
+        super.invalidateCaps();
+        itemHandler.invalidate();
+    }
+
+    @Override
+    public void reviveCaps() {
+        super.reviveCaps();
+        itemHandler = net.minecraftforge.common.util.LazyOptional.of(() -> new net.minecraftforge.items.wrapper.InvWrapper(this));
     }
 
     public void setDamage(float p_38312_) {
@@ -295,6 +446,7 @@ public class RocketEntity extends Entity implements ITeleporter {
     @Override
     protected void addPassenger(Entity passenger) {
 //        Minecraft.getInstance().options.setCameraType(CameraType.THIRD_PERSON_FRONT);
+//        ModPackets.sendToServer(new ChangeCameraC2SPacket(2));
         super.addPassenger(passenger);
         if (this.isControlledByLocalInstance() && this.lerpSteps > 0) {
             this.lerpSteps = 0;

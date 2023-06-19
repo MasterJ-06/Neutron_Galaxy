@@ -15,6 +15,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.monster.piglin.PiglinAi;
@@ -24,6 +25,7 @@ import net.minecraft.world.entity.vehicle.ContainerEntity;
 import net.minecraft.world.entity.vehicle.DismountHelper;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ChestMenu;
+import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.GameRules;
@@ -32,6 +34,7 @@ import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.util.ITeleporter;
 import net.minecraftforge.network.NetworkHooks;
+import neutrongalaxy.masterj.neutrongalaxy.client.gui.screens.rocket.RocketMenu;
 import neutrongalaxy.masterj.neutrongalaxy.init.EntityInit;
 import neutrongalaxy.masterj.neutrongalaxy.init.ItemInit;
 import neutrongalaxy.masterj.neutrongalaxy.networking.ModPackets;
@@ -346,7 +349,7 @@ public class RocketEntity extends Entity implements ITeleporter, ContainerEntity
             return null;
         } else {
             this.unpackLootTable(pPlayerInventory.player);
-            return ChestMenu.threeRows(pContainerId, pPlayerInventory, this);
+            return new RocketMenu(pContainerId, pPlayerInventory, this);
         }
     }
 

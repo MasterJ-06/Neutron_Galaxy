@@ -2,6 +2,7 @@ package neutrongalaxy.masterj.neutrongalaxy;
 
 import com.mojang.logging.LogUtils;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
@@ -14,6 +15,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import neutrongalaxy.masterj.neutrongalaxy.client.gui.screens.rocket.RocketScreen;
 import neutrongalaxy.masterj.neutrongalaxy.init.*;
 import neutrongalaxy.masterj.neutrongalaxy.networking.ModPackets;
 import neutrongalaxy.masterj.neutrongalaxy.sounds.ModSounds;
@@ -30,7 +32,6 @@ public class NeutronGalaxy {
 
     public NeutronGalaxy() {
         final IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
-//        ClientEvents.launch = false;
         BlockInit.BLOCKS.register(bus);
         ItemInit.ITEMS.register(bus);
         EntityInit.ENTITIES.register(bus);
@@ -38,6 +39,7 @@ public class NeutronGalaxy {
         FluidInit.FLUIDS.register(bus);
         ModSounds.register(bus);
         DimensionInit.register();
+        MenuInit.register(bus);
         bus.addListener(this::commonSetup);
         InterModComms.sendTo(CuriosApi.MODID, SlotTypeMessage.REGISTER_TYPE, () -> new SlotTypeMessage.Builder("ng_hat").icon(InventoryMenu.EMPTY_ARMOR_SLOT_HELMET).priority(1).build());
         InterModComms.sendTo(CuriosApi.MODID, SlotTypeMessage.REGISTER_TYPE, () -> new SlotTypeMessage.Builder("ng_torso").icon(InventoryMenu.EMPTY_ARMOR_SLOT_CHESTPLATE).priority(2).build());
@@ -69,6 +71,7 @@ public class NeutronGalaxy {
             // Some client setup code
             LOGGER.info("HELLO FROM CLIENT SETUP");
             LOGGER.info("MINECRAFT NAME >> {}", Minecraft.getInstance().getUser().getName());
+            MenuScreens.register(MenuInit.ROCKET_MENU.get(), RocketScreen::new);
         }
     }
 

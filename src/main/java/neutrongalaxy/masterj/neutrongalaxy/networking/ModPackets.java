@@ -36,8 +36,6 @@ public class ModPackets {
                 .consumerMainThread(SendDestPlanetC2SPacket::handle).add();
         net.messageBuilder(TempDataSyncS2CPacket.class, id(), NetworkDirection.PLAY_TO_CLIENT).decoder(TempDataSyncS2CPacket::new).encoder(TempDataSyncS2CPacket::toBytes)
                 .consumerMainThread(TempDataSyncS2CPacket::handle).add();
-        net.messageBuilder(ChangeCameraC2SPacket.class, id(), NetworkDirection.PLAY_TO_SERVER).decoder(ChangeCameraC2SPacket::new).encoder(ChangeCameraC2SPacket::toBytes)
-                .consumerMainThread(ChangeCameraC2SPacket::handle).add();
         net.messageBuilder(FirstPersonS2CPacket.class, id(), NetworkDirection.PLAY_TO_CLIENT).decoder(FirstPersonS2CPacket::new).encoder(FirstPersonS2CPacket::toBytes)
                 .consumerMainThread(FirstPersonS2CPacket::handle).add();
         net.messageBuilder(ThirdFrontPersonS2CPacket.class, id(), NetworkDirection.PLAY_TO_CLIENT).decoder(ThirdFrontPersonS2CPacket::new).encoder(ThirdFrontPersonS2CPacket::toBytes)

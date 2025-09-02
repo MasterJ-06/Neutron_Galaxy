@@ -11,6 +11,7 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
 import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
@@ -37,6 +38,10 @@ import neutrongalaxy.masterj.neutrongalaxy.client.gui.screens.rocket.RocketMenu;
 import neutrongalaxy.masterj.neutrongalaxy.init.EntityInit;
 import neutrongalaxy.masterj.neutrongalaxy.init.FluidInit;
 import neutrongalaxy.masterj.neutrongalaxy.init.ItemInit;
+import neutrongalaxy.masterj.neutrongalaxy.networking.ModPackets;
+import neutrongalaxy.masterj.neutrongalaxy.networking.packet.FirstPersonS2CPacket;
+import neutrongalaxy.masterj.neutrongalaxy.networking.packet.ThirdBackPersonS2CPacket;
+import neutrongalaxy.masterj.neutrongalaxy.networking.packet.ThirdFrontPersonS2CPacket;
 
 import javax.annotation.Nullable;
 import java.io.Serializable;
@@ -262,7 +267,9 @@ public class RocketEntity extends Entity implements ITeleporter, ContainerEntity
     @Override
     public Vec3 getDismountLocationForPassenger(LivingEntity pPassenger) {
 //        Minecraft.getInstance().options.setCameraType(CameraType.FIRST_PERSON);
-//        ModPackets.sendToServer(new ChangeCameraC2SPacket(0));
+        if (!this.level.isClientSide) {
+            ModPackets.sendToPlayer(new FirstPersonS2CPacket(), (ServerPlayer) pPassenger);
+        }
         Vec3 vec3 = getCollisionHorizontalEscapeVector(this.getBbWidth() * Mth.SQRT_OF_TWO, pPassenger.getBbWidth(), pPassenger.getYRot());
         double d0 = this.getX() + vec3.x;
         double d1 = this.getZ() + vec3.z;
@@ -591,6 +598,9 @@ public class RocketEntity extends Entity implements ITeleporter, ContainerEntity
     protected void addPassenger(Entity passenger) {
 //        Minecraft.getInstance().options.setCameraType(CameraType.THIRD_PERSON_FRONT);
 //        ModPackets.sendToServer(new ChangeCameraC2SPacket(2));
+        if (!this.level.isClientSide) {
+            ModPackets.sendToPlayer(new ThirdFrontPersonS2CPacket(), (ServerPlayer) passenger);
+        }
         super.addPassenger(passenger);
         if (this.isControlledByLocalInstance() && this.lerpSteps > 0) {
             this.lerpSteps = 0;

@@ -10,6 +10,7 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.network.NetworkEvent;
+import neutrongalaxy.masterj.neutrongalaxy.entities.RocketEntity;
 import neutrongalaxy.masterj.neutrongalaxy.entities.TP;
 import neutrongalaxy.masterj.neutrongalaxy.init.DimensionInit;
 import neutrongalaxy.masterj.neutrongalaxy.networking.ModPackets;
@@ -38,6 +39,7 @@ public class SendDestPlanetC2SPacket {
             // Here we are on the server
             ServerPlayer player = ctx.getSender();
             ServerLevel level = player.getLevel();
+            int id;
             ResourceKey<Level> planet;
 
             planet = switch (this.p) {
@@ -51,6 +53,11 @@ public class SendDestPlanetC2SPacket {
                 case "neptune" -> DimensionInit.NG_NEPTUNE;
                 default -> ServerLevel.OVERWORLD;
             };
+            id = player.getRootVehicle().getId();
+            int energy = 0;
+            if (player.getRootVehicle() instanceof RocketEntity rocketEntity) {
+                energy = rocketEntity.getEnergyStored();
+            }
             player.getRootVehicle().changeDimension(Objects.requireNonNull(Objects.requireNonNull(player.getServer()).getLevel(planet)), new TP());
             if (planet == ServerLevel.OVERWORLD) {
                 player.getCapability(PlayerTempProvider.PLAYER_TEMP).ifPresent(temp -> {
@@ -81,6 +88,7 @@ public class SendDestPlanetC2SPacket {
                 });
             }
             player.changeDimension(Objects.requireNonNull(player.getServer().getLevel(planet)), new TP());
+//            ModPackets.sendToClients(new EnergySyncfromServerS2CPacket(energy, id));
             // check what dimension the player is already in, don't let it move to the dimension it is already in.
             // This is to stop the player from falling to their death when changing dimension. Possibly going to be replaced by a parachute armour piece.
             // May need to increase or decrease 2nd int for MobEffectInstance depending on the height above the planet the rocket is so slow falling stops them from dying.

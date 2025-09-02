@@ -22,7 +22,9 @@ public class ClientEvents {
             if (KeyBinding.LAUNCH_KEY.consumeClick()) {
                 assert Minecraft.getInstance().player != null;
                 if (Minecraft.getInstance().player.getRootVehicle() instanceof RocketEntity entity) {
-                    entity.setLaunch(true);
+                    if (entity.getFuel()) {
+                        entity.setLaunch(true);
+                    }
                 }
             }
         }

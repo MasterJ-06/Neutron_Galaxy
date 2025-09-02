@@ -15,7 +15,6 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.monster.piglin.PiglinAi;
@@ -24,31 +23,32 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.vehicle.ContainerEntity;
 import net.minecraft.world.entity.vehicle.DismountHelper;
 import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.minecraft.world.inventory.ChestMenu;
-import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.util.ITeleporter;
 import net.minecraftforge.network.NetworkHooks;
 import neutrongalaxy.masterj.neutrongalaxy.client.gui.screens.rocket.RocketMenu;
 import neutrongalaxy.masterj.neutrongalaxy.init.EntityInit;
+import neutrongalaxy.masterj.neutrongalaxy.init.FluidInit;
 import neutrongalaxy.masterj.neutrongalaxy.init.ItemInit;
-import neutrongalaxy.masterj.neutrongalaxy.networking.ModPackets;
-import neutrongalaxy.masterj.neutrongalaxy.networking.packet.MoveRocketC2SPacket;
 
 import javax.annotation.Nullable;
+import java.io.Serializable;
 import java.util.List;
 
-public class RocketEntity extends Entity implements ITeleporter, ContainerEntity, HasCustomInventoryScreen {
+public class RocketEntity extends Entity implements ITeleporter, ContainerEntity, HasCustomInventoryScreen, Serializable {
     private static final EntityDataAccessor<Integer> DATA_ID_HURT = SynchedEntityData.defineId(RocketEntity.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> DATA_ID_HURTDIR = SynchedEntityData.defineId(RocketEntity.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Float> DATA_ID_DAMAGE = SynchedEntityData.defineId(RocketEntity.class, EntityDataSerializers.FLOAT);
     private static final EntityDataAccessor<Integer> DATA_ID_TYPE = SynchedEntityData.defineId(RocketEntity.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Boolean> DATA_LAUNCH = SynchedEntityData.defineId(RocketEntity.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Boolean> DATA_FUEL = SynchedEntityData.defineId(RocketEntity.class, EntityDataSerializers.BOOLEAN);
     private float outOfControlTicks;
     private float deltaRotation;
     private int lerpSteps;
@@ -58,9 +58,16 @@ public class RocketEntity extends Entity implements ITeleporter, ContainerEntity
     private double lerpYRot;
     private double lerpXRot;
 
+    // Simple server-side energy store (authoritative)
+    private int energy;
+    private int capacity = 100000;
+    private int maxReceive = 1000;
+    private int maxExtract = 1000;
+
     public RocketEntity(EntityType<? extends RocketEntity> type, Level level) {
         super(type, level);
         this.blocksBuilding = true;
+//        lazyEnergyHandler = LazyOptional.of(() -> ENERGY_STORAGE);
     }
 
     public RocketEntity(Level p_38293_, double p_38294_, double p_38295_, double p_38296_) {
@@ -69,6 +76,7 @@ public class RocketEntity extends Entity implements ITeleporter, ContainerEntity
         this.xo = p_38294_;
         this.yo = p_38295_;
         this.zo = p_38296_;
+//        lazyEnergyHandler = LazyOptional.of(() -> ENERGY_STORAGE);
     }
 
     @Override
@@ -78,14 +86,23 @@ public class RocketEntity extends Entity implements ITeleporter, ContainerEntity
         this.entityData.define(DATA_ID_DAMAGE, 0.0F);
         this.entityData.define(DATA_ID_TYPE, RocketEntity.Type.ROCKET.ordinal());
         this.entityData.define(DATA_LAUNCH, false);
+        this.entityData.define(DATA_FUEL, false);
     }
 
     public void setLaunch(boolean bool) {
-        this.entityData.set(DATA_LAUNCH, bool);
+        this.entityData.set(RocketEntity.DATA_LAUNCH, bool);
     }
 
     public boolean getLaunch() {
         return this.entityData.get(DATA_LAUNCH);
+    }
+
+    public void setFuel(boolean bool) {
+        this.entityData.set(DATA_FUEL, bool);
+    }
+
+    public boolean getFuel() {
+        return this.entityData.get(DATA_FUEL);
     }
 
     public void tick() {
@@ -99,27 +116,61 @@ public class RocketEntity extends Entity implements ITeleporter, ContainerEntity
         }
 
         super.tick();
-        if (this.getLaunch()) {
-            if (!this.hasExactlyOnePlayerPassenger()) {
-                this.setLaunch(false);
+//        if (!this.level.isClientSide) {
+//            if (hasEnoughEnergy(this)) {
+//                setFuel(true);
+//            } else {
+//                setFuel(false);
+//                setLaunch(false);
+//            }
+//        }
+//        if (this.getLaunch() && this.getFuel()) {
+//            if (!this.hasExactlyOnePlayerPassenger()) {
+//                this.setLaunch(false);
+//            }
+//            //not working
+////            extractEnergy(this);
+//            this.ENERGY_STORAGE.extractEnergy(ENERGY_REQ, false);
+//            ModPackets.sendToServer(new MoveRocketC2SPacket());
+//            this.move(MoverType.SELF, this.getDeltaMovement());
+//        } else {
+//            this.setDeltaMovement(this.getDeltaMovement().add(0.0D, -0.02D, 0.0D));
+//            this.move(MoverType.SELF, this.getDeltaMovement());
+//        }
+//        this.checkInsideBlocks();
+        int fuel_slot = this.hasRocketFuelInInv();
+        if (fuel_slot != -1) {
+            //try to fix this if statement so fuel can fill completely, but does not add fuel at 60000
+            if (this.getEnergyStored() < capacity) {
+                this.receiveEnergy(128, false);
+                this.removeItem(fuel_slot, 1);
             }
-            ModPackets.sendToServer(new MoveRocketC2SPacket());
-            this.move(MoverType.SELF, this.getDeltaMovement());
-        } else {
-            this.setDeltaMovement(this.getDeltaMovement().add(0.0D, -0.02D, 0.0D));
-            this.move(MoverType.SELF, this.getDeltaMovement());
         }
-        this.checkInsideBlocks();
     }
 
+    public BlockPos getPos() {
+        return new BlockPos(this.getX(), this.getY(), this.getZ());
+    }
+
+    // Persist energy to NBT
     @Override
     protected void readAdditionalSaveData(CompoundTag pCompound) {
         this.readChestVehicleSaveData(pCompound);
+        if (pCompound.contains("Energy")) this.energy = pCompound.getInt("Energy");
+        if (pCompound.contains("Capacity")) this.capacity = pCompound.getInt("Capacity");
+        if (pCompound.contains("MaxReceive")) this.maxReceive = pCompound.getInt("MaxReceive");
+        if (pCompound.contains("MaxExtract")) this.maxExtract = pCompound.getInt("MaxExtract");
+        // Clamp after loading
+        if (energy > capacity) energy = capacity;
     }
 
     @Override
     protected void addAdditionalSaveData(CompoundTag pCompound) {
         this.addChestVehicleSaveData(pCompound);
+        pCompound.putInt("Energy", energy);
+        pCompound.putInt("Capacity", capacity);
+        pCompound.putInt("MaxReceive", maxReceive);
+        pCompound.putInt("MaxExtract", maxExtract);
     }
 
     @Override
@@ -349,7 +400,7 @@ public class RocketEntity extends Entity implements ITeleporter, ContainerEntity
             return null;
         } else {
             this.unpackLootTable(pPlayerInventory.player);
-            return new RocketMenu(pContainerId, pPlayerInventory, this);
+            return new RocketMenu(pContainerId, pPlayerInventory, this, this);
         }
     }
 
@@ -382,26 +433,116 @@ public class RocketEntity extends Entity implements ITeleporter, ContainerEntity
         this.itemStacks = NonNullList.withSize(this.getContainerSize(), ItemStack.EMPTY);
     }
 
-    // Forge Start
-    private net.minecraftforge.common.util.LazyOptional<?> itemHandler = net.minecraftforge.common.util.LazyOptional.of(() -> new net.minecraftforge.items.wrapper.InvWrapper(this));
+    // Energy API for capability delegate
+    public int getEnergyStored() { return energy; }
+    public int getMaxEnergyStored() { return capacity; }
+    public void setEnergy(int pEnergy) { this.energy = pEnergy; }
 
-    @Override
-    public <T> net.minecraftforge.common.util.LazyOptional<T> getCapability(net.minecraftforge.common.capabilities.Capability<T> capability, @Nullable net.minecraft.core.Direction facing) {
-        if (this.isAlive() && capability == net.minecraftforge.common.capabilities.ForgeCapabilities.ITEM_HANDLER)
-            return itemHandler.cast();
-        return super.getCapability(capability, facing);
+    public int receiveEnergy(int amount, boolean simulate) {
+        int space = capacity - energy;
+        int accepted = Math.min(space, Math.min(amount, maxReceive));
+        if (!simulate && accepted > 0) energy += accepted;
+        return accepted;
     }
 
-    @Override
-    public void invalidateCaps() {
-        super.invalidateCaps();
-        itemHandler.invalidate();
+    public int extractEnergy(int amount, boolean simulate) {
+        int available = Math.min(energy, Math.min(amount, maxExtract));
+        if (!simulate && available > 0) energy -= available;
+        return available;
     }
 
-    @Override
-    public void reviveCaps() {
-        super.reviveCaps();
-        itemHandler = net.minecraftforge.common.util.LazyOptional.of(() -> new net.minecraftforge.items.wrapper.InvWrapper(this));
+    // Optional: setters to tweak stats at runtime
+    public void setCapacity(int capacity) {
+        this.capacity = Math.max(0, capacity);
+        if (energy > this.capacity) energy = this.capacity;
+    }
+    public void setMaxReceive(int maxReceive) { this.maxReceive = Math.max(0, maxReceive); }
+    public void setMaxExtract(int maxExtract) { this.maxExtract = Math.max(0, maxExtract); }
+
+    private int clientCapacity = 0;
+
+    @OnlyIn(Dist.CLIENT)
+    public void setClientCapacity(int capacity) {
+        this.clientCapacity = capacity;
+    }
+
+    public int getSyncedCapacity() {
+        return level != null && level.isClientSide ? clientCapacity : getMaxEnergyStored();
+    }
+
+    private int clientEnergy = 0;
+
+    @OnlyIn(Dist.CLIENT)
+    public void setClientEnergy(int energy) {
+        this.clientEnergy = energy;
+    }
+
+    public int getSyncedEnergy() {
+        return level != null && level.isClientSide ? clientEnergy : getEnergyStored();
+    }
+
+    private int hasRocketFuelInInv() {
+        return hasItemInInventory(FluidInit.ROCKET_FUEL.bucket.get());
+    }
+
+    private int hasItemInInventory(Item item) {
+        if (this.getItem(0).getItem() == item) {
+            return 0;
+        } else if (this.getItem(1).getItem() == item) {
+            return 1;
+        } else if (this.getItem(2).getItem() == item) {
+            return 2;
+        } else if (this.getItem(3).getItem() == item) {
+            return 3;
+        } else if (this.getItem(4).getItem() == item) {
+            return 4;
+        } else if (this.getItem(5).getItem() == item) {
+            return 5;
+        } else if (this.getItem(6).getItem() == item) {
+            return 6;
+        } else if (this.getItem(7).getItem() == item) {
+            return 7;
+        } else if (this.getItem(8).getItem() == item) {
+            return 8;
+        } else if (this.getItem(9).getItem() == item) {
+            return 9;
+        } else if (this.getItem(10).getItem() == item) {
+            return 10;
+        } else if (this.getItem(11).getItem() == item) {
+            return 11;
+        } else if (this.getItem(12).getItem() == item) {
+            return 12;
+        } else if (this.getItem(13).getItem() == item) {
+            return 13;
+        } else if (this.getItem(14).getItem() == item) {
+            return 14;
+        } else if (this.getItem(15).getItem() == item) {
+            return 15;
+        } else if (this.getItem(16).getItem() == item) {
+            return 16;
+        } else if (this.getItem(17).getItem() == item) {
+            return 17;
+        } else if (this.getItem(18).getItem() == item) {
+            return 18;
+        } else if (this.getItem(19).getItem() == item) {
+            return 19;
+        } else if (this.getItem(20).getItem() == item) {
+            return 20;
+        } else if (this.getItem(21).getItem() == item) {
+            return 21;
+        } else if (this.getItem(22).getItem() == item) {
+            return 22;
+        } else if (this.getItem(23).getItem() == item) {
+            return 23;
+        } else if (this.getItem(24).getItem() == item) {
+            return 24;
+        } else if (this.getItem(25).getItem() == item) {
+            return 25;
+        } else if (this.getItem(26).getItem() == item) {
+            return 26;
+        } else {
+            return -1;
+        }
     }
 
     public void setDamage(float p_38312_) {

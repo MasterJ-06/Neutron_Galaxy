@@ -9,6 +9,7 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import neutrongalaxy.masterj.neutrongalaxy.NeutronGalaxy;
+import neutrongalaxy.masterj.neutrongalaxy.base.AbstractRocketItem;
 import neutrongalaxy.masterj.neutrongalaxy.base.COFFEE;
 import neutrongalaxy.masterj.neutrongalaxy.base.DRINK;
 import neutrongalaxy.masterj.neutrongalaxy.base.RocketItem;

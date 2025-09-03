@@ -88,7 +88,6 @@ public class SendDestPlanetC2SPacket {
                 });
             }
             player.changeDimension(Objects.requireNonNull(player.getServer().getLevel(planet)), new TP());
-//            ModPackets.sendToClients(new EnergySyncfromServerS2CPacket(energy, id));
             // check what dimension the player is already in, don't let it move to the dimension it is already in.
             // This is to stop the player from falling to their death when changing dimension. Possibly going to be replaced by a parachute armour piece.
             // May need to increase or decrease 2nd int for MobEffectInstance depending on the height above the planet the rocket is so slow falling stops them from dying.

@@ -51,8 +51,8 @@ public class SyncEntityEnergyS2CPacket {
         if (level != null) {
             Entity e = level.getEntity(entityId);
             if (e instanceof RocketEntity energyEntity) {
-                energyEntity.setClientCapacity(capacity);
-                energyEntity.setClientEnergy(energy);
+//                energyEntity.setClientCapacity(capacity);
+//                energyEntity.setClientEnergy(energy);
             }
         }
     }

@@ -2,6 +2,7 @@ package neutrongalaxy.masterj.neutrongalaxy.networking;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.Entity;
 import net.minecraftforge.network.NetworkDirection;
 import net.minecraftforge.network.NetworkRegistry;
 import net.minecraftforge.network.PacketDistributor;
@@ -28,6 +29,8 @@ public class ModPackets {
         INSTANCE = net;
         net.messageBuilder(SyncEntityEnergyS2CPacket.class, id(), NetworkDirection.PLAY_TO_CLIENT).decoder(SyncEntityEnergyS2CPacket::new).encoder(SyncEntityEnergyS2CPacket::toBytes)
                 .consumerMainThread(SyncEntityEnergyS2CPacket::handle).add();
+        net.messageBuilder(LaunchKeyC2SPacket.class, id(), NetworkDirection.PLAY_TO_SERVER).decoder(LaunchKeyC2SPacket::new).encoder(LaunchKeyC2SPacket::toBytes)
+                .consumerMainThread(LaunchKeyC2SPacket::handle).add();
         net.messageBuilder(MoveRocketC2SPacket.class, id(), NetworkDirection.PLAY_TO_SERVER).decoder(MoveRocketC2SPacket::new).encoder(MoveRocketC2SPacket::toBytes)
                 .consumerMainThread(MoveRocketC2SPacket::handle).add();
         net.messageBuilder(RequestDestPlanetS2CPacket.class, id(), NetworkDirection.PLAY_TO_CLIENT).decoder(RequestDestPlanetS2CPacket::new).encoder(RequestDestPlanetS2CPacket::toBytes)
@@ -50,6 +53,10 @@ public class ModPackets {
 
     public static <MSG> void sendToPlayer(MSG message, ServerPlayer player) {
         INSTANCE.send(PacketDistributor.PLAYER.with(() -> player), message);
+    }
+
+    public static <MSG> void sendToTracking(MSG message, Entity entity) {
+        INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> entity), message);
     }
 
     public static <MSG> void sendToClients(MSG message) {

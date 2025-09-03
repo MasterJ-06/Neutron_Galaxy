@@ -11,6 +11,8 @@ import net.minecraftforge.fml.common.Mod;
 import neutrongalaxy.masterj.neutrongalaxy.NeutronGalaxy;
 import neutrongalaxy.masterj.neutrongalaxy.client.gui.screens.PlanetTempOverlay;
 import neutrongalaxy.masterj.neutrongalaxy.entities.RocketEntity;
+import neutrongalaxy.masterj.neutrongalaxy.networking.ModPackets;
+import neutrongalaxy.masterj.neutrongalaxy.networking.packet.LaunchKeyC2SPacket;
 import neutrongalaxy.masterj.neutrongalaxy.util.KeyBinding;
 
 @OnlyIn(Dist.CLIENT)
@@ -20,12 +22,13 @@ public class ClientEvents {
         @SubscribeEvent
         public static void onKeyInput(InputEvent.Key event) {
             if (KeyBinding.LAUNCH_KEY.consumeClick()) {
-                assert Minecraft.getInstance().player != null;
-                if (Minecraft.getInstance().player.getRootVehicle() instanceof RocketEntity entity) {
-                    if (entity.getFuel()) {
-                        entity.setLaunch(true);
-                    }
-                }
+//                assert Minecraft.getInstance().player != null;
+//                if (Minecraft.getInstance().player.getRootVehicle() instanceof RocketEntity entity) {
+//                    if (entity.getFuel()) {
+//                        entity.setLaunch(true);
+//                    }
+//                }
+                ModPackets.sendToServer(new LaunchKeyC2SPacket(true));
             }
         }
     }

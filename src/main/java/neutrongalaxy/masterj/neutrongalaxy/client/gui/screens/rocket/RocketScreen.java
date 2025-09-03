@@ -49,8 +49,8 @@ public class RocketScreen extends AbstractContainerScreen<RocketMenu> {
 
         this.blit(pose, x1 - 16, y1, 0, 0, imageWidth + 16, imageHeight);
 
-        int energy = menu.rocket.getSyncedEnergy();
-        int cap = Math.max(1, menu.rocket.getSyncedCapacity());
+        int energy = menu.rocket.getClientEnergy();
+        int cap = Math.max(1, menu.rocket.getClientCapacity());
         int barHeight = 60; // pixels for bar
         int filled = (int) Math.round((energy / (double) cap) * barHeight);
 

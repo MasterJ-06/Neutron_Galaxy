@@ -56,7 +56,7 @@ public class SendDestPlanetC2SPacket {
             id = player.getRootVehicle().getId();
             int energy = 0;
             if (player.getRootVehicle() instanceof RocketEntity rocketEntity) {
-                energy = rocketEntity.getEnergyStored();
+                energy = rocketEntity.getServerEnergy();
             }
             player.getRootVehicle().changeDimension(Objects.requireNonNull(Objects.requireNonNull(player.getServer()).getLevel(planet)), new TP());
             if (planet == ServerLevel.OVERWORLD) {

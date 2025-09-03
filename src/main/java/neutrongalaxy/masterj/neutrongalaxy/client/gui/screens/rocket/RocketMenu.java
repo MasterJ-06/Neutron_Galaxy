@@ -88,7 +88,7 @@ public class RocketMenu extends AbstractContainerMenu {
         this.inventory = inv;
 
         if (!level.isClientSide) {
-            ModPackets.sendToPlayer(new SyncEntityEnergyS2CPacket(rocket.getId(), rocket.getMaxEnergyStored(), rocket.getEnergyStored()), (ServerPlayer) inv.player);
+            ModPackets.sendToPlayer(new SyncEntityEnergyS2CPacket(rocket.getId(), rocket.getServerEnergy(), rocket.getServerCapacity()), (ServerPlayer) inv.player);
         }
 
         // Add player inventory slots
@@ -133,7 +133,7 @@ public class RocketMenu extends AbstractContainerMenu {
     public void broadcastChanges() {
         super.broadcastChanges();
         if (!this.rocket.level.isClientSide) {
-            ModPackets.sendToPlayer(new SyncEntityEnergyS2CPacket(rocket.getId(), rocket.getMaxEnergyStored(), rocket.getEnergyStored()), (ServerPlayer) inventory.player);
+            ModPackets.sendToPlayer(new SyncEntityEnergyS2CPacket(rocket.getId(), rocket.getServerEnergy(), rocket.getServerCapacity()), (ServerPlayer) inventory.player);
         }
     }
 }

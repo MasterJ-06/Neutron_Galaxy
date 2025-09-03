@@ -3,14 +3,17 @@ package neutrongalaxy.masterj.neutrongalaxy.entities;
 import com.google.common.collect.Lists;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
 import net.minecraft.world.Containers;
@@ -32,16 +35,21 @@ import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.ITeleporter;
+import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.energy.EnergyStorage;
+import net.minecraftforge.energy.IEnergyStorage;
+import net.minecraftforge.entity.IEntityAdditionalSpawnData;
 import net.minecraftforge.network.NetworkHooks;
 import neutrongalaxy.masterj.neutrongalaxy.client.gui.screens.rocket.RocketMenu;
 import neutrongalaxy.masterj.neutrongalaxy.init.EntityInit;
 import neutrongalaxy.masterj.neutrongalaxy.init.FluidInit;
 import neutrongalaxy.masterj.neutrongalaxy.init.ItemInit;
 import neutrongalaxy.masterj.neutrongalaxy.networking.ModPackets;
-import neutrongalaxy.masterj.neutrongalaxy.networking.packet.FirstPersonS2CPacket;
-import neutrongalaxy.masterj.neutrongalaxy.networking.packet.ThirdBackPersonS2CPacket;
-import neutrongalaxy.masterj.neutrongalaxy.networking.packet.ThirdFrontPersonS2CPacket;
+import neutrongalaxy.masterj.neutrongalaxy.networking.packet.*;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 import java.io.Serializable;
@@ -65,9 +73,27 @@ public class RocketEntity extends Entity implements ITeleporter, ContainerEntity
 
     // Simple server-side energy store (authoritative)
     private int energy;
-    private int capacity = 100000;
+    private int capacity = 60000;
     private int maxReceive = 1000;
     private int maxExtract = 1000;
+    private int ENERGY_REQ = 256;
+    private int lastSyncedEnergy = Integer.MIN_VALUE;
+
+    // Tracked data (auto-sent on spawn and when changed)
+    private static final EntityDataAccessor<Integer> DATA_ENERGY =
+            SynchedEntityData.defineId(RocketEntity.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Integer> DATA_CAPACITY =
+            SynchedEntityData.defineId(RocketEntity.class, EntityDataSerializers.INT);
+
+    // The one and only storage instance for this entity
+    private final RocketEnergyStorage energyStorage = new RocketEnergyStorage(capacity, 1000, 1000);
+
+    // Capability handle
+    private final LazyOptional<IEnergyStorage> energyCap = LazyOptional.of(() -> energyStorage);
+
+    // Track last sent (optional if you rely solely on SynchedEntityData for GUI)
+    private int lastServerEnergy = Integer.MIN_VALUE;
+    private int lastServerCapacity = Integer.MIN_VALUE;
 
     public RocketEntity(EntityType<? extends RocketEntity> type, Level level) {
         super(type, level);
@@ -84,6 +110,49 @@ public class RocketEntity extends Entity implements ITeleporter, ContainerEntity
 //        lazyEnergyHandler = LazyOptional.of(() -> ENERGY_STORAGE);
     }
 
+    // Mutable capacity + change callback into SynchedEntityData
+    public static class RocketEnergyStorage extends EnergyStorage {
+        public RocketEnergyStorage(int capacity, int maxReceive, int maxExtract) {
+            super(capacity, maxReceive, maxExtract);
+        }
+
+        public void setEnergy(int energy) {
+            this.energy = Mth.clamp(energy, 0, this.capacity);
+        }
+
+        public void setCapacity(int capacity) {
+            this.capacity = Math.max(0, capacity);
+            if (this.energy > this.capacity) this.energy = this.capacity;
+        }
+    }
+
+    // -- GUI helpers (client reads tracked values; server reads storage) --
+    public int getClientEnergy() {
+        return this.entityData.get(DATA_ENERGY);
+    }
+    public int getClientCapacity() {
+        return this.entityData.get(DATA_CAPACITY);
+    }
+    public int getServerEnergy() {
+        return energyStorage.getEnergyStored();
+    }
+    public int getServerCapacity() {
+        return energyStorage.getMaxEnergyStored();
+    }
+
+    // -- Capability exposure (same instance, no new objects) --
+    @Override
+    public <T> LazyOptional<T> getCapability(Capability<T> cap, @Nullable Direction side) {
+        if (cap == ForgeCapabilities.ENERGY) return energyCap.cast();
+        return super.getCapability(cap, side);
+    }
+
+    @Override
+    public void invalidateCaps() {
+        super.invalidateCaps();
+        energyCap.invalidate();
+    }
+
     @Override
     protected void defineSynchedData() {
         this.entityData.define(DATA_ID_HURT, 0);
@@ -92,6 +161,9 @@ public class RocketEntity extends Entity implements ITeleporter, ContainerEntity
         this.entityData.define(DATA_ID_TYPE, RocketEntity.Type.ROCKET.ordinal());
         this.entityData.define(DATA_LAUNCH, false);
         this.entityData.define(DATA_FUEL, false);
+        this.entityData.define(DATA_ENERGY, 0);
+        this.entityData.define(DATA_CAPACITY, capacity);
+        this.entityData.define(DATA_FLYING, false);
     }
 
     public void setLaunch(boolean bool) {
@@ -102,12 +174,28 @@ public class RocketEntity extends Entity implements ITeleporter, ContainerEntity
         return this.entityData.get(DATA_LAUNCH);
     }
 
+    private static final EntityDataAccessor<Boolean> DATA_FLYING = SynchedEntityData.defineId(RocketEntity.class, EntityDataSerializers.BOOLEAN);
+
+    public boolean isFlying() { return this.entityData.get(DATA_FLYING); }
+
+    public void setFlying(boolean flying) { this.entityData.set(DATA_FLYING, flying); }
+
     public void setFuel(boolean bool) {
         this.entityData.set(DATA_FUEL, bool);
     }
 
     public boolean getFuel() {
         return this.entityData.get(DATA_FUEL);
+    }
+
+    @Override
+    public Entity changeDimension(ServerLevel destination, ITeleporter teleporter) {
+        Entity e = super.changeDimension(destination, teleporter);
+        if (e instanceof RocketEntity rocket) {
+            rocket.setFlying(false);
+            rocket.setLaunch(false);
+        }
+        return e;
     }
 
     public void tick() {
@@ -121,33 +209,74 @@ public class RocketEntity extends Entity implements ITeleporter, ContainerEntity
         }
 
         super.tick();
-//        if (!this.level.isClientSide) {
-//            if (hasEnoughEnergy(this)) {
-//                setFuel(true);
-//            } else {
-//                setFuel(false);
-//                setLaunch(false);
+        if (!this.level.isClientSide) {
+            if (this.getServerEnergy() >= this.ENERGY_REQ) {
+                setFuel(true);
+            } else {
+                setFuel(false);
+                setLaunch(false);
+            }
+        }
+//        System.out.println("Server: " + getServerEnergy());
+//        System.out.println("Client: " + getClientEnergy());
+        if (!level.isClientSide) {
+//            int before = energyStorage.getEnergyStored();
+//            int extracted = energyStorage.extractEnergy(50, false);
+//            int after = energyStorage.getEnergyStored();
+//            System.out.println("Before: " + before + " | Extracted: " + extracted + " | After: " + after);
+            System.out.println("Launch: " + this.getLaunch());
+            System.out.println("Fuel: " + this.getFuel());
+        }
+        if (!level.isClientSide) {
+//            int currentEnergy = getEnergyStored();
+//
+//            // Only send if it changed
+//            if (currentEnergy != lastSyncedEnergy) {
+//                lastSyncedEnergy = currentEnergy;
+//
+//                // Send to all players tracking this entity
+//                ModPackets.sendToTracking(new SyncEntityEnergyS2CPacket(this.getId(), currentEnergy, getMaxEnergyStored()), this);
 //            }
-//        }
-//        if (this.getLaunch() && this.getFuel()) {
-//            if (!this.hasExactlyOnePlayerPassenger()) {
-//                this.setLaunch(false);
-//            }
-//            //not working
-////            extractEnergy(this);
-//            this.ENERGY_STORAGE.extractEnergy(ENERGY_REQ, false);
-//            ModPackets.sendToServer(new MoveRocketC2SPacket());
-//            this.move(MoverType.SELF, this.getDeltaMovement());
-//        } else {
-//            this.setDeltaMovement(this.getDeltaMovement().add(0.0D, -0.02D, 0.0D));
-//            this.move(MoverType.SELF, this.getDeltaMovement());
-//        }
-//        this.checkInsideBlocks();
+            // Push current values into tracked data only if they changed
+            int e = energyStorage.getEnergyStored();
+            int c = energyStorage.getMaxEnergyStored();
+            if (e != lastServerEnergy) {
+                lastServerEnergy = e;
+                this.entityData.set(DATA_ENERGY, e);
+            }
+            if (c != lastServerCapacity) {
+                lastServerCapacity = c;
+                this.entityData.set(DATA_CAPACITY, c);
+            }
+        }
+        if (this.getLaunch() && this.getFuel()) {
+            if (!this.hasExactlyOnePlayerPassenger()) {
+                this.setLaunch(false);
+            }
+            if (!level.isClientSide) {
+                if (getLaunch() && !isFlying()) {
+                    if (energyStorage.getEnergyStored() >= ENERGY_REQ) {
+                        energyStorage.extractEnergy(ENERGY_REQ, false); // one-time cost
+                        setFlying(true);
+                    } else {
+                        setLaunch(false); // not enough fuel to start
+                    }
+                }
+            }
+            if (this.level.isClientSide && isFlying()) {
+                ModPackets.sendToServer(new MoveRocketC2SPacket());
+            }
+            this.move(MoverType.SELF, this.getDeltaMovement());
+        } else {
+            this.setDeltaMovement(this.getDeltaMovement().add(0.0D, -0.02D, 0.0D));
+            this.move(MoverType.SELF, this.getDeltaMovement());
+        }
+        this.checkInsideBlocks();
         int fuel_slot = this.hasRocketFuelInInv();
         if (fuel_slot != -1) {
             //try to fix this if statement so fuel can fill completely, but does not add fuel at 60000
-            if (this.getEnergyStored() < capacity) {
-                this.receiveEnergy(128, false);
+            if (this.getServerEnergy() < this.getServerCapacity()) {
+                this.energyStorage.receiveEnergy(128, false);
                 this.removeItem(fuel_slot, 1);
             }
         }
@@ -161,22 +290,31 @@ public class RocketEntity extends Entity implements ITeleporter, ContainerEntity
     @Override
     protected void readAdditionalSaveData(CompoundTag pCompound) {
         this.readChestVehicleSaveData(pCompound);
-        if (pCompound.contains("Energy")) this.energy = pCompound.getInt("Energy");
-        if (pCompound.contains("Capacity")) this.capacity = pCompound.getInt("Capacity");
-        if (pCompound.contains("MaxReceive")) this.maxReceive = pCompound.getInt("MaxReceive");
-        if (pCompound.contains("MaxExtract")) this.maxExtract = pCompound.getInt("MaxExtract");
-        // Clamp after loading
-        if (energy > capacity) energy = capacity;
+        energyStorage.setCapacity(pCompound.getInt("Capacity"));
+        energyStorage.setEnergy(pCompound.getInt("Energy"));
+        // Update synced fields on server
+        if (!level.isClientSide) {
+            this.entityData.set(DATA_CAPACITY, energyStorage.getMaxEnergyStored());
+            this.entityData.set(DATA_ENERGY, energyStorage.getEnergyStored());
+        }
     }
 
     @Override
     protected void addAdditionalSaveData(CompoundTag pCompound) {
         this.addChestVehicleSaveData(pCompound);
-        pCompound.putInt("Energy", energy);
-        pCompound.putInt("Capacity", capacity);
-        pCompound.putInt("MaxReceive", maxReceive);
-        pCompound.putInt("MaxExtract", maxExtract);
+        pCompound.putInt("Energy", energyStorage.getEnergyStored());
+        pCompound.putInt("Capacity", energyStorage.getMaxEnergyStored());
     }
+
+//    @Override
+//    public void writeSpawnData(FriendlyByteBuf buffer) {
+//        buffer.writeInt(this.getEnergyStored());
+//    }
+//
+//    @Override
+//    public void readSpawnData(FriendlyByteBuf buffer) {
+//        this.setEnergy(buffer.readInt());
+//    }
 
     @Override
     public Packet<?> getAddEntityPacket() {
@@ -441,52 +579,67 @@ public class RocketEntity extends Entity implements ITeleporter, ContainerEntity
     }
 
     // Energy API for capability delegate
-    public int getEnergyStored() { return energy; }
-    public int getMaxEnergyStored() { return capacity; }
-    public void setEnergy(int pEnergy) { this.energy = pEnergy; }
+//    public int getEnergyStored() { return energy; }
+//    public int getMaxEnergyStored() { return capacity; }
+//    public void setEnergy(int pEnergy) { this.energy = pEnergy; }
 
-    public int receiveEnergy(int amount, boolean simulate) {
-        int space = capacity - energy;
-        int accepted = Math.min(space, Math.min(amount, maxReceive));
-        if (!simulate && accepted > 0) energy += accepted;
-        return accepted;
-    }
+//    public int getEnergyStored() {
+//        return energyStorage.getEnergyStored();
+//    }
+//
+//    public int getMaxEnergyStored() {
+//        return energyStorage.getMaxEnergyStored();
+//    }
+//
+//    public void setEnergy(int energy) {
+//        // Only possible if you subclass EnergyStorage to expose this
+//        if (energyStorage instanceof CustomEnergyStorage custom) {
+//            custom.setEnergy(energy);
+//        }
+//    }
 
-    public int extractEnergy(int amount, boolean simulate) {
-        int available = Math.min(energy, Math.min(amount, maxExtract));
-        if (!simulate && available > 0) energy -= available;
-        return available;
-    }
+//    public int receiveEnergy(int amount, boolean simulate) {
+//        int space = capacity - energy;
+//        int accepted = Math.min(space, Math.min(amount, maxReceive));
+//        if (!simulate && accepted > 0) energy += accepted;
+//        return accepted;
+//    }
+//
+//    public int extractEnergy(int amount, boolean simulate) {
+//        int available = Math.min(energy, Math.min(amount, maxExtract));
+//        if (!simulate && available > 0) energy -= available;
+//        return available;
+//    }
+//
+//    // Optional: setters to tweak stats at runtime
+//    public void setCapacity(int capacity) {
+//        this.capacity = Math.max(0, capacity);
+//        if (energy > this.capacity) energy = this.capacity;
+//    }
+//    public void setMaxReceive(int maxReceive) { this.maxReceive = Math.max(0, maxReceive); }
+//    public void setMaxExtract(int maxExtract) { this.maxExtract = Math.max(0, maxExtract); }
 
-    // Optional: setters to tweak stats at runtime
-    public void setCapacity(int capacity) {
-        this.capacity = Math.max(0, capacity);
-        if (energy > this.capacity) energy = this.capacity;
-    }
-    public void setMaxReceive(int maxReceive) { this.maxReceive = Math.max(0, maxReceive); }
-    public void setMaxExtract(int maxExtract) { this.maxExtract = Math.max(0, maxExtract); }
-
-    private int clientCapacity = 0;
-
-    @OnlyIn(Dist.CLIENT)
-    public void setClientCapacity(int capacity) {
-        this.clientCapacity = capacity;
-    }
-
-    public int getSyncedCapacity() {
-        return level != null && level.isClientSide ? clientCapacity : getMaxEnergyStored();
-    }
-
-    private int clientEnergy = 0;
-
-    @OnlyIn(Dist.CLIENT)
-    public void setClientEnergy(int energy) {
-        this.clientEnergy = energy;
-    }
-
-    public int getSyncedEnergy() {
-        return level != null && level.isClientSide ? clientEnergy : getEnergyStored();
-    }
+//    private int clientCapacity = 0;
+//
+//    @OnlyIn(Dist.CLIENT)
+//    public void setClientCapacity(int capacity) {
+//        this.clientCapacity = capacity;
+//    }
+//
+//    public int getSyncedCapacity() {
+//        return level != null && level.isClientSide ? clientCapacity : getMaxEnergyStored();
+//    }
+//
+//    private int clientEnergy = 0;
+//
+//    @OnlyIn(Dist.CLIENT)
+//    public void setClientEnergy(int energy) {
+//        this.clientEnergy = energy;
+//    }
+//
+//    public int getSyncedEnergy() {
+//        return level != null && level.isClientSide ? clientEnergy : getEnergyStored();
+//    }
 
     private int hasRocketFuelInInv() {
         return hasItemInInventory(FluidInit.ROCKET_FUEL.bucket.get());
